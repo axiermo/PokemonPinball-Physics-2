@@ -1,0 +1,16 @@
+﻿  j1Map.cpp
+  Generating Code...
+  Compiling...
+  j1Scene.cpp
+  j1Physics.cpp
+c:\users\asier\desktop\pokemon_pinball\pokemon_pinball\motor2d\j1physics.cpp(224): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+c:\users\asier\desktop\pokemon_pinball\pokemon_pinball\motor2d\j1physics.cpp(225): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+c:\users\asier\desktop\pokemon_pinball\pokemon_pinball\motor2d\j1physics.cpp(268): warning C4018: '<': signed/unsigned mismatch
+c:\users\asier\desktop\pokemon_pinball\pokemon_pinball\motor2d\j1physics.cpp(347): warning C4244: '=': conversion from 'int' to 'float32', possible loss of data
+c:\users\asier\desktop\pokemon_pinball\pokemon_pinball\motor2d\j1physics.cpp(378): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+c:\users\asier\desktop\pokemon_pinball\pokemon_pinball\motor2d\j1physics.cpp(379): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+c:\users\asier\desktop\pokemon_pinball\pokemon_pinball\motor2d\j1physics.cpp(385): warning C4244: 'return': conversion from 'float32' to 'int', possible loss of data
+  j1App.cpp
+  Generating Code...
+  Motor2D.vcxproj -> C:\Users\asier\Desktop\Pokemon_Pinball\Pokemon_Pinball\Debug\Dev Class7.5 Handout.exe
+  Motor2D.vcxproj -> C:\Users\asier\Desktop\Pokemon_Pinball\Pokemon_Pinball\Debug\Dev Class7.5 Handout.pdb (Full PDB)
