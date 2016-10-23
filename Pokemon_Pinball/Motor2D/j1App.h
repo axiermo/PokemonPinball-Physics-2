@@ -20,6 +20,7 @@ class j1App
 {
 public:
 
+
 	// Constructor
 	j1App(int argc, char* args[]);
 

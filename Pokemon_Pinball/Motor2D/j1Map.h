@@ -72,6 +72,7 @@ public:
 		
 	};
 	element* background;
+	element* ball;
 	element* overlay;
 	element* overlay2;
 	element* cyndaquilcave;

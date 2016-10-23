@@ -31,7 +31,8 @@ bool j1Map::Start()
 	overlay2 = new element(map, 552, 32, 500, 450, 22, 10);
 	cyndaquilcave = new element(map,375 ,1736 , 82,72, 144,232 );
 	background = new element(map,1058 , 32, 500, 829, 1, 1);
-	
+	ball = new element(App->tex->Load("maps/PokeBall_std.png"), 0, 0, 36, 36);
+
 	//name of the variable = App->tex->Load()
 	//ASIER TODO
 	//here we will load every sprite
@@ -43,7 +44,9 @@ void j1Map::DrawChainsBoard() {
 	//flippers
 
 	//ball
-
+	ball->physbody = App->physics->CreateCircle(20, 30, 11, b2BodyType::b2_dynamicBody);
+	ball->physbody->body->SetBullet(1);
+	balls.add(ball->physbody);
 	
 	//walls
 	int board[182] = {
@@ -140,6 +143,7 @@ void j1Map::DrawChainsBoard() {
 		0, 0
 
 	};
+	PhysBody* background = App->physics->CreateChain(0, 0, board, 182, b2BodyType::b2_staticBody);
 
 	int L_left[24] = {
 		195, 902,
@@ -235,6 +239,7 @@ void j1Map::DrawChainsBoard() {
 		123, 954
 	};
 
+	//flippers
 	int left_flipper[24] = {
 		221, 884,
 		207, 873,
@@ -249,7 +254,7 @@ void j1Map::DrawChainsBoard() {
 		255, 907,
 		230, 890
 	};
-
+	
 	int right_flipper[22] = {
 		305, 896,
 		289, 909,
@@ -272,7 +277,7 @@ void j1Map::Draw()
 	App->render->Blit(overlay->texture, overlay->position.x, overlay->position.y, &overlay->box);
 	App->render->Blit(overlay2->texture, overlay2->position.x, overlay2->position.y, &overlay2->box);
 	App->render->Blit(cyndaquilcave->texture, cyndaquilcave->position.x, cyndaquilcave->position.y, &cyndaquilcave->box);
-
+	App->render->Blit(ball->texture, ball->position.x, ball->position.y, &ball->box);
 }
 
 // Called before quitting
