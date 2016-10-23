@@ -1,26 +1,3 @@
-﻿  pugixml.cpp
-  j1Window.cpp
-  j1Textures.cpp
-  j1Render.cpp
-  p2Log.cpp
-  j1Scene.cpp
-  j1Physics.cpp
-c:\users\asier\documents\github\test\pokemon_pinball\motor2d\j1physics.cpp(224): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-c:\users\asier\documents\github\test\pokemon_pinball\motor2d\j1physics.cpp(225): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-c:\users\asier\documents\github\test\pokemon_pinball\motor2d\j1physics.cpp(268): warning C4018: '<': signed/unsigned mismatch
-c:\users\asier\documents\github\test\pokemon_pinball\motor2d\j1physics.cpp(347): warning C4244: '=': conversion from 'int' to 'float32', possible loss of data
-c:\users\asier\documents\github\test\pokemon_pinball\motor2d\j1physics.cpp(378): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
-c:\users\asier\documents\github\test\pokemon_pinball\motor2d\j1physics.cpp(379): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
-c:\users\asier\documents\github\test\pokemon_pinball\motor2d\j1physics.cpp(385): warning C4244: 'return': conversion from 'float32' to 'int', possible loss of data
-  j1Map.cpp
-  j1Input.cpp
-  j1Audio.cpp
-  j1App.cpp
-  j1Main.cpp
-  j1FileSystem.cpp
-  Generating Code...
-  LINK : C:\Users\asier\Documents\GitHub\test\Pokemon_Pinball\Debug\Dev Class7.5 Handout.exe not found or not built by the last incremental link; performing full link
-     Creating library C:\Users\asier\Documents\GitHub\test\Pokemon_Pinball\Debug\Dev Class7.5 Handout.lib and object C:\Users\asier\Documents\GitHub\test\Pokemon_Pinball\Debug\Dev Class7.5 Handout.exp
-physfs.lib(physfs.obj) : warning LNK4217: locally defined symbol _sprintf imported in function _PHYSFS_setSaneConfig
-  Motor2D.vcxproj -> C:\Users\asier\Documents\GitHub\test\Pokemon_Pinball\Debug\Dev Class7.5 Handout.exe
-  Motor2D.vcxproj -> C:\Users\asier\Documents\GitHub\test\Pokemon_Pinball\Debug\Dev Class7.5 Handout.pdb (Full PDB)
+﻿  j1Scene.cpp
+  Motor2D.vcxproj -> C:\Users\Usuario\Documents\GitHub\PokemonPinball-Physics-2\Pokemon_Pinball\Debug\Dev Class7.5 Handout.exe
+  Motor2D.vcxproj -> C:\Users\Usuario\Documents\GitHub\PokemonPinball-Physics-2\Pokemon_Pinball\Debug\Dev Class7.5 Handout.pdb (Full PDB)

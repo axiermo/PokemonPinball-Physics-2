@@ -31,7 +31,7 @@ bool j1Map::Start()
 	overlay2 = new element(map, 552, 32, 500, 450, 22, 10);
 	cyndaquilcave = new element(map, 375, 1736, 82, 72, 135, 220);
 	background = new element(map,1058 , 32, 500, 829, 1, 1);
-	ball = new element(App->tex->Load("maps/PokeBall_std.png"), 0, 0, 36, 36);
+	ball = new element(App->tex->Load("maps/PokeBall_std.png"), 0, 0, 36, 36,450,750);
 
 	//name of the variable = App->tex->Load()
 	//ASIER TODO
@@ -40,111 +40,106 @@ bool j1Map::Start()
 	return true;
 }
 
-void j1Map::DrawChainsBoard() {
-	//flippers
-
+void j1Map::DrawChainsBoard() 
+{
 	//ball
-	ball->physbody = App->physics->CreateCircle(20, 30, 11, b2BodyType::b2_dynamicBody);
+	ball->physbody = App->physics->CreateCircle(400, 200, 11, b2BodyType::b2_dynamicBody);
 	ball->physbody->body->SetBullet(1);
 	balls.add(ball->physbody);
 	
 	//walls
-	int board[182] = {
-		0, 957,
-		225, 957,
-		225, 945,
-		167, 915,
-		125, 890,
-		88, 865,
-		88, 893,
-		54, 893,
-		54, 749,
-		56, 741,
-		60, 734,
-		65, 730,
-		72, 727,
-		91, 727,
-		98, 726,
-		103, 722,
-		107, 716,
-		108, 708,
-		108, 643,
-		88, 623,
-		72, 599,
-		58, 572,
-		45, 544,
-		34, 509,
-		27, 472,
-		26, 458,
-		26, 415,
-		30, 381,
-		37, 338,
-		46, 308,
-		62, 274,
-		80, 247,
-		109, 217,
-		145, 194,
-		185, 176,
-		217, 167,
-		248, 164,
-		301, 164,
-		331, 168,
-		360, 177,
-		389, 188,
-		417, 205,
-		439, 218,
-		457, 230,
-		483, 251,
-		512, 279,
-		525, 297,
-		537, 321,
-		546, 344,
-		553, 366,
-		560, 396,
-		564, 429,
-		564, 920,
-		532, 920,
-		532, 468,
-		528, 418,
-		523, 376,
-		515, 342,
-		501, 313,
-		493, 306,
-		493, 324,
-		502, 353,
-		508, 381,
-		511, 414,
-		512, 462,
-		508, 495,
-		501, 527,
-		490, 556,
-		472, 592,
-		458, 614,
-		448, 628,
-		432, 642,
-		432, 716,
-		434, 721,
-		439, 725,
-		447, 728,
-		468, 728,
-		475, 730,
-		480, 733,
-		484, 739,
-		486, 750,
-		486, 892,
-		452, 892,
-		452, 865,
-		397, 901,
-		349, 927,
-		317, 943,
-		317, 957,
-		577, 957,
-		577, 0,
+	int board[176] = {
+		0, 829,
+		195, 829,
+		195, 820,
+		152, 796,
+		105, 768,
+		76, 748,
+		76, 775,
+		46, 775,
+		46, 650,
+		48, 643,
+		51, 638,
+		55, 634,
+		60, 632,
+		81, 632,
+		88, 630,
+		91, 626,
+		93, 622,
+		93, 558,
+		77, 541,
+		65, 523,
+		53, 502,
+		42, 481,
+		32, 454,
+		26, 426,
+		23, 406,
+		23, 338,
+		29, 304,
+		38, 273,
+		52, 241,
+		67, 218,
+		94, 190,
+		123, 171,
+		151, 158,
+		185, 148,
+		212, 144,
+		260, 144,
+		296, 150,
+		330, 161,
+		363, 179,
+		388, 196,
+		409, 211,
+		445, 242,
+		462, 266,
+		475, 304,
+		483, 330,
+		485, 342,
+		488, 370,
+		488, 798,
+		461, 798,
+		461, 408,
+		460, 385,
+		458, 362,
+		454, 329,
+		448, 303,
+		439, 280,
+		432, 269,
+		427, 266,
+		427, 284,
+		432, 297,
+		437, 317,
+		442, 340,
+		444, 357,
+		444, 403,
+		441, 430,
+		436, 456,
+		424, 484,
+		410, 513,
+		395, 539,
+		374, 558,
+		374, 619,
+		376, 625,
+		381, 629,
+		390, 632,
+		407, 632,
+		413, 635,
+		418, 640,
+		420, 646,
+		421, 654,
+		421, 775,
+		393, 775,
+		393, 750,
+		354, 776,
+		318, 797,
+		275, 819,
+		275, 829,
+		500, 829,
+		500, 0,
 		0, 0
 
 	};
-	PhysBody* background = App->physics->CreateChain(0, 0, board, 182, b2BodyType::b2_staticBody);
-
+	PhysBody* background = App->physics->CreateChain(0, 0, board, 176, b2BodyType::b2_staticBody);
 	int L_left[24] = {
 		195, 902,
 		100, 842,
@@ -187,7 +182,7 @@ void j1Map::DrawChainsBoard() {
 		381, 801,
 		352, 820
 	};
-	// Pivot 0, 0
+	
 	int triangle_left[16] = {
 		148, 793,
 		146, 753,
@@ -220,7 +215,7 @@ void j1Map::DrawChainsBoard() {
 		115, 407,
 		120, 429
 	};
-	// Pivot 0, 0
+	
 	int balls_warehouse[30] = {
 		220, 956,
 		156, 997,
@@ -240,20 +235,20 @@ void j1Map::DrawChainsBoard() {
 	};
 
 	//flippers
-	int left_flipper[24] = {
-		221, 884,
-		207, 873,
-		196, 873,
-		191, 879,
-		188, 890,
-		192, 899,
-		202, 903,
-		241, 920,
-		250, 921,
-		256, 917,
-		255, 907,
-		230, 890
+	int left_flipper[22] = {
+		169, 783,
+		161, 780,
+		158, 775,
+		158, 762,
+		163, 757,
+		172, 757,
+		214, 786,
+		215, 791,
+		211, 797,
+		204, 797,
+		183, 789
 	};
+	l_flipper_joint = App->physics->CreateRevoluteJoint(15, left_flipper, 22, 0, 0, 100, 100, 200, 150, 250, -90);
 	
 	int right_flipper[22] = {
 		305, 896,
@@ -268,6 +263,14 @@ void j1Map::DrawChainsBoard() {
 		338, 872,
 		315, 888
 	};
+	l_flipper_joint = App->physics->CreateRevoluteJoint(15, right_flipper, 22, 0, 0, 100, 100, 200, 150, 250, -90);
+
+	//ball launcher
+	int pos_x = 450; int pos_y = 800;
+	PhysBody* A = App->physics->CreateRectangle(pos_x, pos_y, 10, 100, b2BodyType::b2_staticBody);
+	PhysBody* B = App->physics->CreateRectangle(pos_x, pos_y-30, 50, 70, b2BodyType::b2_kinematicBody);
+	ball_launcher_joint = App->physics->CreatePrismaticJoint(A, B, b2Vec2(1, 10), b2Vec2(1, -10), -40, -120, 248, 200);
+
 }
 
 void j1Map::Draw()

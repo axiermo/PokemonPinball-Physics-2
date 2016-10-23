@@ -189,8 +189,8 @@ PhysBody * j1Physics::CreateCircle(int x, int y, int radius,b2BodyType bodytype)
 	shape.m_radius = PIXEL_TO_METERS(radius);
 	b2FixtureDef fixture;
 	fixture.shape = &shape;
-	fixture.density = 1.0f;
-	fixture.restitution = 0.33f;
+	fixture.density = 0.01f;
+	fixture.restitution = 0.01f;
 
 	b->CreateFixture(&fixture);
 
@@ -202,10 +202,10 @@ PhysBody * j1Physics::CreateCircle(int x, int y, int radius,b2BodyType bodytype)
 	return pbody;
 }
 
-PhysBody* j1Physics::CreateRectangle(int x, int y, int width, int height)
+PhysBody* j1Physics::CreateRectangle(int x, int y, int width, int height, b2BodyType bodytype)
 {
 	b2BodyDef body;
-	body.type = b2_dynamicBody;
+	body.type = bodytype;
 	body.position.Set(PIXEL_TO_METERS(x), PIXEL_TO_METERS(y));
 
 	b2Body* b = world->CreateBody(&body);
@@ -288,50 +288,79 @@ PhysBody * j1Physics::CreateChain(int x, int y, int* points, int size, b2BodyTyp
 
 	return pbody;
 }
-//
-//b2PrismaticJoint* j1Physics::CreatePrismaticJoint(PhysBody* bodyA, PhysBody* bodyB, b2Vec2 ancorA, b2Vec2 ancorB, int max, int min, int maxMotor, int motorSpeed)
-//{
-//	b2PrismaticJointDef prismaticJointDef;
-//	prismaticJointDef.bodyA = bodyA->body;
-//	prismaticJointDef.bodyB = bodyB->body;
-//	prismaticJointDef.collideConnected = false;
-//	prismaticJointDef.localAxisA.Set(0, 1);
-//	prismaticJointDef.localAnchorA.Set(PIXEL_TO_METERS(ancorA.x), PIXEL_TO_METERS(ancorA.y));
-//	prismaticJointDef.localAnchorB.Set(PIXEL_TO_METERS(ancorB.x), PIXEL_TO_METERS(ancorB.y));
-//
-//	prismaticJointDef.enableLimit = true;
-//	prismaticJointDef.lowerTranslation = PIXEL_TO_METERS(min);
-//	prismaticJointDef.upperTranslation = PIXEL_TO_METERS(max);
-//	prismaticJointDef.type = e_prismaticJoint;
-//
-//	prismaticJointDef.enableMotor = true;
-//	prismaticJointDef.motorSpeed = motorSpeed * DEGTORAD;
-//	prismaticJointDef.maxMotorForce = maxMotor;
-//
-//	b2PrismaticJoint* joint = (b2PrismaticJoint*)world->CreateJoint(&prismaticJointDef);
-//
-//	return joint;
-//}
+
+b2PrismaticJoint* j1Physics::CreatePrismaticJoint(PhysBody* bodyA, PhysBody* bodyB, b2Vec2 ancorA, b2Vec2 ancorB, int max, int min, int maxMotor, int motorSpeed)
+{
+	b2PrismaticJointDef prismaticJointDef;
+	prismaticJointDef.bodyA = bodyA->body;
+	prismaticJointDef.bodyB = bodyB->body;
+	prismaticJointDef.collideConnected = false;
+	prismaticJointDef.localAxisA.Set(0, 1);
+	prismaticJointDef.localAnchorA.Set(PIXEL_TO_METERS(ancorA.x), PIXEL_TO_METERS(ancorA.y));
+	prismaticJointDef.localAnchorB.Set(PIXEL_TO_METERS(ancorB.x), PIXEL_TO_METERS(ancorB.y));
+
+	prismaticJointDef.enableLimit = true;
+	prismaticJointDef.lowerTranslation = PIXEL_TO_METERS(min);
+	prismaticJointDef.upperTranslation = PIXEL_TO_METERS(max);
+	prismaticJointDef.type = e_prismaticJoint;
+
+	prismaticJointDef.enableMotor = true;
+	prismaticJointDef.motorSpeed = motorSpeed * DEGTORAD;
+	prismaticJointDef.maxMotorForce = maxMotor;
+
+	b2PrismaticJoint* joint = (b2PrismaticJoint*)world->CreateJoint(&prismaticJointDef);
+
+	return joint;
+}
 
 //b2PrismaticJoint* j1Physics::CreatePrismaticJoint(PhysBody* bodyA, PhysBody* bodyB, b2Vec2 ancorA, b2Vec2 ancorB, int max, int min, int maxMotor, int motorSpeed)
 //{
 //	return NULL;
 //}
-b2RevoluteJoint* j1Physics::CreateRevoluteJoint(PhysBody* circleAnchor, PhysBody* chain, int upper_angle, int lower_angle, int max_torque, int speed)
+b2RevoluteJoint* j1Physics::CreateRevoluteJoint(int radius, int* vects, int size, int posx, int posy, int desplacementx, int desplacementy, int upper_angle, int lower_angle, int max_torque, int speed)
 {
-	//Body creation
-	b2Body* bodyA = circleAnchor->body;
-	b2Body* bodyB = chain->body;
+	//body and fixture defs - the common parts
+	b2BodyDef bodyDef;
+	b2FixtureDef fixtureDef;
+	fixtureDef.density = 1;
 
-	//define the revolutejoint
+	//two shapes
+	b2PolygonShape poligonShape;
+
+	b2Vec2* vect = new b2Vec2[size / 2];
+	for (uint i = 0; i < size / 2; ++i)
+	{
+		vect[i].x = PIXEL_TO_METERS(vects[i * 2 + 0]);
+		vect[i].y = PIXEL_TO_METERS(vects[i * 2 + 1]);
+	}
+
+	poligonShape.Set(vect, size / 2);
+
+
+	b2CircleShape circleShape;
+	circleShape.m_radius = PIXEL_TO_METERS(radius);
+
+	//make a box
+	bodyDef.position.Set(PIXEL_TO_METERS(posx), PIXEL_TO_METERS(posy));
+	fixtureDef.shape = &poligonShape;
+	bodyDef.type = b2_dynamicBody;
+	b2Body* m_bodyA = world->CreateBody(&bodyDef);
+	m_bodyA->CreateFixture(&fixtureDef);
+
+	//and a circle
+	bodyDef.position.Set(PIXEL_TO_METERS(posx), PIXEL_TO_METERS(posy));
+	fixtureDef.shape = &circleShape;
+	bodyDef.type = b2_staticBody;
+	b2Body* m_bodyB = world->CreateBody(&bodyDef);
+	m_bodyB->CreateFixture(&fixtureDef);
+
 	b2RevoluteJointDef revoluteJointDef;
-	revoluteJointDef.bodyA = bodyA;
-	revoluteJointDef.bodyB = bodyB;
+	revoluteJointDef.bodyA = m_bodyA;
+	revoluteJointDef.bodyB = m_bodyB;
 	revoluteJointDef.collideConnected = false;
 	revoluteJointDef.type = e_revoluteJoint;
-	revoluteJointDef.localAnchorA.Set(PIXEL_TO_METERS(bodyA->GetLocalCenter().x), PIXEL_TO_METERS(bodyA->GetLocalCenter().y));
-	revoluteJointDef.localAnchorB.Set(PIXEL_TO_METERS(bodyB->GetLocalCenter().x), PIXEL_TO_METERS(bodyB->GetLocalCenter().y));
-	//Enable or not enable the anglelimits
+	revoluteJointDef.localAnchorA.Set(PIXEL_TO_METERS(desplacementx), PIXEL_TO_METERS(desplacementy));
+
 	if (lower_angle != NULL && upper_angle != NULL)
 	{
 		revoluteJointDef.enableLimit = true;
@@ -340,7 +369,7 @@ b2RevoluteJoint* j1Physics::CreateRevoluteJoint(PhysBody* circleAnchor, PhysBody
 	}
 	else
 		revoluteJointDef.enableLimit = false;
-	//enable or not enable motor
+
 	if (max_torque != 0)
 	{
 		revoluteJointDef.enableMotor = true;
@@ -351,9 +380,9 @@ b2RevoluteJoint* j1Physics::CreateRevoluteJoint(PhysBody* circleAnchor, PhysBody
 		revoluteJointDef.enableMotor = false;
 
 
-	b2RevoluteJoint* revolutejoint = (b2RevoluteJoint*)world->CreateJoint(&revoluteJointDef);
+	b2RevoluteJoint* revolute_joint = (b2RevoluteJoint*)world->CreateJoint(&revoluteJointDef);
 
-	return revolutejoint;
+	return revolute_joint;
 }
 
 int PhysBody::RayCast(int x1, int y1, int x2, int y2, float & normal_x, float & normal_y) const

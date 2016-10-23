@@ -36,7 +36,7 @@ public:
 	b2RevoluteJoint* r_flipper_joint;
 
 	// launcher
-	b2PrismaticJoint*    ball_launcher;
+	b2PrismaticJoint*    ball_launcher_joint;
 
 	// balls
 	p2List<PhysBody*>    balls;
@@ -73,6 +73,7 @@ public:
 	};
 	element* background;
 	element* ball;
+	element* ball_launcher;
 	element* overlay;
 	element* overlay2;
 	element* cyndaquilcave;
@@ -83,13 +84,7 @@ public:
 };
 
 
-////flipper things	
-//PhysBody* l_flipper;
-//PhysBody* r_flipper;
-//
-//PhysBody* l_flipper_circle;
-//PhysBody* r_flipper_circle;
-//
+
 
 
 

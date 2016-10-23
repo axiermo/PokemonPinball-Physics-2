@@ -60,12 +60,12 @@ public:
 	bool CleanUp();
 
 	PhysBody* CreateCircle(int x, int y, int radius, b2BodyType bodytype);
-	PhysBody* CreateRectangle(int x, int y, int width, int height);
+	PhysBody* CreateRectangle(int x, int y, int width, int height, b2BodyType bodytype);
 	PhysBody* CreateRectangleSensor(int x, int y, int width, int height);
 	PhysBody* CreateChain(int x, int y, int* points, int size, b2BodyType bodytype);
 
 	b2PrismaticJoint* CreatePrismaticJoint(PhysBody* bodyA, PhysBody* bodyB, b2Vec2 ancorA, b2Vec2 ancorB, int max, int min, int maxMotor, int motorSpeed);
-	b2RevoluteJoint* CreateRevoluteJoint(PhysBody* circleAnchor, PhysBody* chain, int upper_angle, int lower_angle, int max_torque, int speed);
+	b2RevoluteJoint* CreateRevoluteJoint(int radius, int* vects, int size, int posx, int posy, int anchorx, int anchory, int upper_angle, int lower_angle, int max_torque, int speed);
 
 
 	// b2ContactListener ---

@@ -8,6 +8,7 @@
 #include "j1Window.h"
 #include "j1Map.h"
 #include "j1Scene.h"
+#include "j1Physics.h"
 
 j1Scene::j1Scene() : j1Module()
 {
@@ -57,7 +58,8 @@ bool j1Scene::Update(float dt)
 		{
 			if (debug_mode)
 				debug_mode = false;
-			debug_mode = true;
+			else
+				debug_mode = true;
 		}
 		if (debug_mode)
 		{
@@ -73,27 +75,31 @@ bool j1Scene::Update(float dt)
 			if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
 				App->render->camera.x -= 1;
 		}
-
+		// GAMEPLAY INPUTS
 		// Left flippers
-		/*if ((App->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN) || (App->input->GetKey(SDL_SCANCODE_Z) == KEY_REPEAT))
-			App->map->l_flipper_joint->SetMotorSpeed(400);
-		else if ((App->input->GetKey(SDL_SCANCODE_Z) == KEY_UP))
-			App->map->l_flipper_joint->SetMotorSpeed(-200);*/
+		//if ((App->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN) || (App->input->GetKey(SDL_SCANCODE_Z) == KEY_REPEAT))
+		//	App->map->l_flipper_joint->SetMotorSpeed(400);
+		//else if ((App->input->GetKey(SDL_SCANCODE_Z) == KEY_UP))
+		//	App->map->l_flipper_joint->SetMotorSpeed(-200);
 
-		// Right flippers
-		/*if ((App->input->GetKey(SDL_SCANCODE_M) == KEY_DOWN))
-			App->map->r_flipper_joint->SetMotorSpeed(-400);
-		if ((App->input->GetKey(SDL_SCANCODE_M) == KEY_UP))
-			App->map->r_flipper_joint->SetMotorSpeed(200);
-*/
-		// Spring
-		if ((App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN))
-			//LATER
-
+		//// Right flippers
+		//if ((App->input->GetKey(SDL_SCANCODE_M) == KEY_DOWN) || (App->input->GetKey(SDL_SCANCODE_Z) == KEY_REPEAT))
+		//	App->map->r_flipper_joint->SetMotorSpeed(400);
+		//else if ((App->input->GetKey(SDL_SCANCODE_M) == KEY_UP))
+		//	App->map->r_flipper_joint->SetMotorSpeed(200);
+		//	
+		//// Ball Launcher 
+		//if ((App->input->GetKey(SDL_SCANCODE_S) == KEY_DOWN))
+		//	App->map->ball_launcher_joint->SetMotorSpeed(2);
+		//else if ((App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT))
+		//	App->map->ball_launcher_joint->SetMotorSpeed(6);
+		//else
+		//	App->map->ball_launcher_joint->SetMotorSpeed(-230);
+	
 		// Create a new ball
-		if ((App->input->GetKey(SDL_SCANCODE_N) == KEY_DOWN))
+		if ((App->input->GetKey(SDL_SCANCODE_B) == KEY_DOWN))
 		{
-			//NewBall();
+			NewBall();
 		}
 
 		// Draw ----------
@@ -101,9 +107,6 @@ bool j1Scene::Update(float dt)
 		App->map->Draw();
 
 		// ---------------
-
-		
-
 	int x, y;
 	App->input->GetMousePosition(x, y);
 	iPoint map_coordinates = { x - App->render->camera.x, y - App->render->camera.y };
@@ -134,5 +137,5 @@ bool j1Scene::CleanUp()
 
 void j1Scene::NewBall()
 {
-	//App->map->ball->pb = App->physics->CreateCircle(600, 980, 10, 0x0002, 0x0001);
+	App->map->ball->physbody = App->physics->CreateCircle(200, 300, 10, b2BodyType::b2_dynamicBody);
 }
