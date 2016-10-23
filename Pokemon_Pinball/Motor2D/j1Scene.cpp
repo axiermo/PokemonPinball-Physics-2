@@ -31,7 +31,7 @@ bool j1Scene::Awake()
 bool j1Scene::Start()
 {
 	App->map->DrawChainsBoard();
-
+	App->audio->PlayMusic("maps/SoundTrack.ogg");
 	debug_mode = false;
 	return true;
 }

@@ -29,7 +29,7 @@ bool j1Map::Start()
 	SDL_Texture* map = (App->tex->Load("maps/sprites.png"));
 	overlay = new element(map, 24, 32, 500, 500, 0, 10);
 	overlay2 = new element(map, 552, 32, 500, 450, 22, 10);
-	cyndaquilcave = new element(map,375 ,1736 , 82,72, 144,232 );
+	cyndaquilcave = new element(map, 375, 1736, 82, 72, 135, 220);
 	background = new element(map,1058 , 32, 500, 829, 1, 1);
 	ball = new element(App->tex->Load("maps/PokeBall_std.png"), 0, 0, 36, 36);
 
