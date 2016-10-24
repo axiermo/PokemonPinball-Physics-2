@@ -11,7 +11,7 @@
 
 
 #define GRAVITY_X 0.0f
-#define GRAVITY_Y -10
+#define GRAVITY_Y -0.01f
 
 #ifdef _DEBUG
 #pragma comment( lib, "Box2D/libx86/Debug/Box2D.lib" )
@@ -198,7 +198,7 @@ PhysBody * j1Physics::CreateCircle(int x, int y, int radius,b2BodyType bodytype)
 	pbody->body = b;
 	b->SetUserData(pbody);
 	pbody->width = pbody->height = radius;
-
+	world->CreateBody(&body);
 	return pbody;
 }
 
@@ -285,51 +285,42 @@ PhysBody * j1Physics::CreateChain(int x, int y, int* points, int size, b2BodyTyp
 	pbody->body = b;
 	b->SetUserData(pbody);
 	pbody->width = pbody->height = 0;
-
+	
 	return pbody;
 }
 
-b2PrismaticJoint* j1Physics::CreatePrismaticJoint(PhysBody* bodyA, PhysBody* bodyB, b2Vec2 ancorA, b2Vec2 ancorB, int max, int min, int maxMotor, int motorSpeed)
+
+
+b2PrismaticJoint* j1Physics::CreatePrismaticJoint(PhysBody* bodyA, PhysBody* bodyB, b2Vec2 anchorA, b2Vec2 anchorB, float low_trams, float upp_trans, float max_motor_force, float speed)
 {
-	b2PrismaticJointDef prismaticJointDef;
-	prismaticJointDef.bodyA = bodyA->body;
-	prismaticJointDef.bodyB = bodyB->body;
-	prismaticJointDef.collideConnected = false;
-	prismaticJointDef.localAxisA.Set(0, 1);
-	prismaticJointDef.localAnchorA.Set(PIXEL_TO_METERS(ancorA.x), PIXEL_TO_METERS(ancorA.y));
-	prismaticJointDef.localAnchorB.Set(PIXEL_TO_METERS(ancorB.x), PIXEL_TO_METERS(ancorB.y));
+	b2PrismaticJointDef def;
 
-	prismaticJointDef.enableLimit = true;
-	prismaticJointDef.lowerTranslation = PIXEL_TO_METERS(min);
-	prismaticJointDef.upperTranslation = PIXEL_TO_METERS(max);
-	prismaticJointDef.type = e_prismaticJoint;
+	def.bodyA = bodyA->body;
+	def.bodyB = bodyB->body;
 
-	prismaticJointDef.enableMotor = true;
-	prismaticJointDef.motorSpeed = motorSpeed * DEGTORAD;
-	prismaticJointDef.maxMotorForce = maxMotor;
+	def.localAnchorA.Set(PIXEL_TO_METERS(anchorA.x), PIXEL_TO_METERS(anchorA.y));
+	def.localAnchorB.Set(PIXEL_TO_METERS(anchorB.x), PIXEL_TO_METERS(anchorB.y));
 
-	b2PrismaticJoint* joint = (b2PrismaticJoint*)world->CreateJoint(&prismaticJointDef);
-
-	return joint;
+	//jointDef.Initialize(myBodyA, myBodyB, myBodyA->GetWorldCenter(), worldAxis);
+	def.lowerTranslation = low_trams;
+	def.upperTranslation = upp_trans;
+	def.enableLimit = true;
+	def.maxMotorForce = max_motor_force;
+	def.motorSpeed = speed;
+	def.enableMotor = true;
+	b2PrismaticJoint* prismatic_joint = (b2PrismaticJoint*)world->CreateJoint(&def);
+	return prismatic_joint;
 }
-
-//b2PrismaticJoint* j1Physics::CreatePrismaticJoint(PhysBody* bodyA, PhysBody* bodyB, b2Vec2 ancorA, b2Vec2 ancorB, int max, int min, int maxMotor, int motorSpeed)
-//{
-//	return NULL;
-//}
-b2RevoluteJoint* j1Physics::CreateRevoluteJoint(PhysBody* bodyA, PhysBody* bodyB, int posx, int posy, int desplacementx, int desplacementy, int upper_angle, int lower_angle, int max_torque, int speed)
+b2RevoluteJoint* j1Physics::CreateRevoluteJoint(PhysBody* bodyA, PhysBody* bodyB,float anchor_x, float anchor_y, int upper_angle, int lower_angle, int max_torque, int speed)
 {
-	//body and fixture defs - the common parts
-	b2BodyDef bodyDef;
-	b2FixtureDef fixtureDef;
-	fixtureDef.density = 1;
 
 	b2RevoluteJointDef revoluteJointDef;
 	revoluteJointDef.bodyA = bodyA->body;
 	revoluteJointDef.bodyB = bodyB->body;
 	revoluteJointDef.collideConnected = false;
 	revoluteJointDef.type = e_revoluteJoint;
-	revoluteJointDef.localAnchorA.Set(PIXEL_TO_METERS(desplacementx), PIXEL_TO_METERS(desplacementy));
+	//el anchor de A es per defecte 0,0
+	revoluteJointDef.localAnchorB.Set(PIXEL_TO_METERS(anchor_x), PIXEL_TO_METERS(anchor_y));
 
 	if (lower_angle != NULL && upper_angle != NULL)
 	{

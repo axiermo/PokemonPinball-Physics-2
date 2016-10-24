@@ -34,6 +34,11 @@ public:
 
 	class element {
 	public:
+		SDL_Texture* texture = nullptr;
+		PhysBody* physbody = nullptr;
+		SDL_Rect box;
+		iPoint position;
+	public:
 		element() {}
 		//call a constructure	
 		element(SDL_Texture* texture, uint rect_x, uint rect_y, uint width, uint height, uint pos_x, uint pos_y)
@@ -46,7 +51,7 @@ public:
 			position.x = pos_x;
 			position.y = pos_y;
 		}
-		element(SDL_Texture* texture, uint rect_x, uint rect_y, uint width, uint height)
+	/*	element(SDL_Texture* texture, uint rect_x, uint rect_y, uint width, uint height)
 		{
 			(this)->texture = texture;
 			box.x = rect_x;
@@ -54,12 +59,10 @@ public:
 			box.w = width;
 			box.h = height;
 		}
+		*/
 		~element() {}
 
-		SDL_Texture* texture = nullptr;
-		PhysBody* physbody = nullptr;
-		SDL_Rect box;
-		iPoint position;
+		
 
 	};
 	//
@@ -69,20 +72,20 @@ public:
 	// launcher
 	b2PrismaticJoint*    ball_launcher_joint;
 
-	// balls
-	p2List<element*>    balls;
-
 	
+	element left_flipper;
+	element right_flipper;
+	element ball;
+	element ball_launcher;
+
 	element* background;
-	element* ball;
-	element* ball_launcher;
 	element* overlay;
 	element* overlay2;
 	element* cyndaquilcave;
 	element* triangle_left;
 	element* triangle_right;
-	element* left_flipper;
-	element* right_flipper;
+
+	iPoint ball_point;
 };
 
 

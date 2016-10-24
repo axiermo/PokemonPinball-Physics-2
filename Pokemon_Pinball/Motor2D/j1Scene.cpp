@@ -77,24 +77,23 @@ bool j1Scene::Update(float dt)
 		}
 		// GAMEPLAY INPUTS
 		// Left flippers
-		//if ((App->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN) || (App->input->GetKey(SDL_SCANCODE_Z) == KEY_REPEAT))
-		//	App->map->l_flipper_joint->SetMotorSpeed(400);
-		//else if ((App->input->GetKey(SDL_SCANCODE_Z) == KEY_UP))
-		//	App->map->l_flipper_joint->SetMotorSpeed(-200);
+		if ((App->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN) || (App->input->GetKey(SDL_SCANCODE_Z) == KEY_REPEAT))
+			App->map->l_flipper_joint->SetMotorSpeed(-0.3);
+		else 
+			App->map->l_flipper_joint->SetMotorSpeed(0.3);
 
 		//// Right flippers
-		//if ((App->input->GetKey(SDL_SCANCODE_M) == KEY_DOWN) || (App->input->GetKey(SDL_SCANCODE_Z) == KEY_REPEAT))
-		//	App->map->r_flipper_joint->SetMotorSpeed(400);
-		//else if ((App->input->GetKey(SDL_SCANCODE_M) == KEY_UP))
-		//	App->map->r_flipper_joint->SetMotorSpeed(200);
-		//	
+		if ((App->input->GetKey(SDL_SCANCODE_M) == KEY_DOWN) || (App->input->GetKey(SDL_SCANCODE_M) == KEY_REPEAT))
+			App->map->r_flipper_joint->SetMotorSpeed(0.3);
+		else 
+			App->map->r_flipper_joint->SetMotorSpeed(-0.3);
+			
 		//// Ball Launcher 
-		if ((App->input->GetKey(SDL_SCANCODE_S) == KEY_DOWN))
-			App->map->ball_launcher_joint->SetMotorSpeed(2);
-		else if ((App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT))
-			App->map->ball_launcher_joint->SetMotorSpeed(6);
-		else
-			App->map->ball_launcher_joint->SetMotorSpeed(-230);
+		if ((App->input->GetKey(SDL_SCANCODE_S) == KEY_DOWN) || (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT))
+			App->map->ball_launcher_joint->SetMotorSpeed(10.0f);
+		else 
+			App->map->ball_launcher_joint->SetMotorSpeed(0.0f);
+	
 	
 		// Create a new ball
 		if ((App->input->GetKey(SDL_SCANCODE_B) == KEY_DOWN))

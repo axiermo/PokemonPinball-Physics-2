@@ -64,15 +64,15 @@ public:
 	PhysBody* CreateRectangleSensor(int x, int y, int width, int height);
 	PhysBody* CreateChain(int x, int y, int* points, int size, b2BodyType bodytype);
 
-	b2PrismaticJoint* CreatePrismaticJoint(PhysBody* bodyA, PhysBody* bodyB, b2Vec2 ancorA, b2Vec2 ancorB, int max, int min, int maxMotor, int motorSpeed);
-	b2RevoluteJoint* CreateRevoluteJoint(PhysBody* bodyA, PhysBody* bodyB, int posx, int posy, int anchorx, int anchory, int upper_angle, int lower_angle, int max_torque, int speed);
+	b2PrismaticJoint* CreatePrismaticJoint(PhysBody* bodyA, PhysBody* bodyB, b2Vec2 anchorA, b2Vec2 anchorB, float low_trams, float upp_trans, float max_motor_force, float speed);
+	b2RevoluteJoint* CreateRevoluteJoint(PhysBody* bodyA, PhysBody* bodyB,float anchorx, float anchory, int upper_angle, int lower_angle, int max_torque, int speed);
 
 
 	// b2ContactListener ---
 	void BeginContact(b2Contact* contact);
 
 private:
-
+	
 	bool debug;
 	b2World* world;
 	b2Body* ground;

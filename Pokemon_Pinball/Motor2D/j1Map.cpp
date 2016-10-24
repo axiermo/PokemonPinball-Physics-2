@@ -26,12 +26,18 @@ bool j1Map::Awake(pugi::xml_node& config)
 
 bool j1Map::Start()
 {
+	ball_point = { 475,600 };
+
 	SDL_Texture* map = (App->tex->Load("maps/sprites.png"));
+	SDL_Texture* pokeball = App->tex->Load("maps/PokeBall_std.png");
 	overlay = new element(map, 24, 32, 500, 500, 0, 10);
 	overlay2 = new element(map, 552, 32, 500, 450, 22, 10);
 	cyndaquilcave = new element(map, 375, 1736, 82, 72, 135, 220);
 	background = new element(map,1058 , 32, 500, 829, 1, 1);
-	ball = new element(App->tex->Load("maps/PokeBall_std.png"), 0, 0, 36, 36,450,750);
+	ball.texture = pokeball;
+	ball.box = { 0,0,24,24 };
+	
+	//left_flipper = new element(map,)
 
 	//name of the variable = App->tex->Load()
 	//ASIER TODO
@@ -43,9 +49,9 @@ bool j1Map::Start()
 void j1Map::DrawChainsBoard() 
 {
 	//ball
-	ball->physbody = App->physics->CreateCircle(400, 200, 11, b2BodyType::b2_dynamicBody);
-	ball->physbody->body->SetBullet(1);
-	balls.add(ball);
+	//ball = new element(App->tex->Load("maps/PokeBall_std.png"), 0, 0, 36, 36, ball_point.x, ball_point.y);
+	ball.physbody = App->physics->CreateCircle(ball_point.x, ball_point.y, 12, b2BodyType::b2_dynamicBody);
+	ball.position = { ball_point.x,ball_point.y };
 	
 	//walls
 	int board[176] = {
@@ -248,44 +254,47 @@ void j1Map::DrawChainsBoard()
 		204, 797,
 		183, 789
 	};
+	int right_flipper[10] = {
+		192, 769,
+		216, 786,
+		215, 793,
+		208, 794,
+		182, 784
+	};
+
+	iPoint left_flipper_pos = {170,763};
+	PhysBody* Ball_l_A = App->physics->CreateCircle(left_flipper_pos.x, left_flipper_pos.y, 10, b2BodyType::b2_staticBody);
+	PhysBody* Chain_l_B = App->physics->CreateRectangle(left_flipper_pos.x, left_flipper_pos.y, 75, 15, b2BodyType::b2_dynamicBody);
+
+	l_flipper_joint = App->physics->CreateRevoluteJoint(Ball_l_A, Chain_l_B, -20.0f, 0.0f, 30,-15, 300, 0);
 
 	//l_flipper_joint = App->physics->CreateRevoluteJoint(10, left_flipper, 22, 169, 765, 10, 10, 200, 150, 10, -90);
 	
-	int right_flipper[22] = {
-		305, 896,
-		289, 909,
-		288, 914,
-		294, 920,
-		301, 921,
-		353, 900,
-		356, 889,
-		354, 879,
-		351, 874,
-		338, 872,
-		315, 888
-	}; 
-	iPoint right_flipper_pos = {};
-	PhysBody* Ball_r_A = App->physics->CreateCircle(,,,b2BodyType::b2_staticBody);
-	PhysBody* Chain_r_B = App->physics->CreateChain(right_flipper_pos.x, right_flipper_pos.y, 50, 70, b2BodyType::b2_kinematicBody);
+	iPoint right_flipper_pos = {305,763};
+	PhysBody* Ball_r_A = App->physics->CreateCircle(right_flipper_pos.x, right_flipper_pos.y,10,b2BodyType::b2_staticBody);
+	PhysBody* Chain_r_B = App->physics->CreateRectangle(right_flipper_pos.x , right_flipper_pos.y, 75, 15, b2BodyType::b2_dynamicBody);
+	//PhysBody* Chain_r_B = App->physics->CreateChain(right_flipper_pos.x, right_flipper_pos.y, right_flipper, 10, b2BodyType::b2_dynamicBody);
 
-	r_flipper_joint = App->physics->CreateRevoluteJoint(Ball_r_A, Chain_r_B, 300, 765, 300, 765, 200, 150, 10, -90);
+	r_flipper_joint = App->physics->CreateRevoluteJoint(Ball_r_A, Chain_r_B,20.0f, 0.0f, 15, -30, 300, 0);
 
 	//ball launcher
-	iPoint ball_launcher_pos = {1,2};
+	iPoint ball_launcher_pos = {475,780};
 	PhysBody* Launcher_A = App->physics->CreateRectangle(ball_launcher_pos.x, ball_launcher_pos.y, 10, 100, b2BodyType::b2_staticBody);
-	PhysBody* Launcher_B = App->physics->CreateRectangle(ball_launcher_pos.x, ball_launcher_pos.y, 50, 70, b2BodyType::b2_kinematicBody);
-	ball_launcher_joint = App->physics->CreatePrismaticJoint(Launcher_A, Launcher_B, b2Vec2(1, 10), b2Vec2(1, -10), -40, -120, 248, 200);
+	PhysBody* Launcher_B = App->physics->CreateRectangle(ball_launcher_pos.x, ball_launcher_pos.y-100, 50, 10, b2BodyType::b2_staticBody);
+	ball_launcher_joint = App->physics->CreatePrismaticJoint(Launcher_A, Launcher_B, b2Vec2(0, 0), b2Vec2(0, 0),-5.0f,1.0f,1.0f,0.0f);
 
 }
 
 void j1Map::Draw()
-{
+{	
+	ball.physbody->GetPosition(ball.position.x, ball.position.y);
+
 	//App->render->Blit() utilitzar aquesta funció per totes les textures
 	App->render->Blit(background->texture, background->position.x, background->position.y, &background->box);
 	App->render->Blit(overlay->texture, overlay->position.x, overlay->position.y, &overlay->box);
 	App->render->Blit(overlay2->texture, overlay2->position.x, overlay2->position.y, &overlay2->box);
 	App->render->Blit(cyndaquilcave->texture, cyndaquilcave->position.x, cyndaquilcave->position.y, &cyndaquilcave->box);
-	App->render->Blit(ball->texture, ball->position.x, ball->position.y, &ball->box);
+	App->render->Blit(ball.texture, ball.position.x, ball.position.y , &ball.box);//18 = half of the box
 }
 
 // Called before quitting
@@ -298,13 +307,19 @@ bool j1Map::CleanUp()
 
 void j1Map::NewBall()
 {
-	if (ball != nullptr)//we will destroy the ball every 
-	{
-		return;
-	}
-	else
-	{
-		App->map->ball = new element(App->tex->Load("maps/PokeBall_std.png"), 0, 0, 36, 36, 450, 750);
-	}
+	ball.position = { 200,200 };
+	
+	//ball.position = { ball_point.x,ball_point.y };
+	
+	
+	//ball.physbody = ball.physbody = App->physics->CreateCircle(ball_point.x, ball_point.y, 11, b2BodyType::b2_dynamicBody);
+	//if (ball != nullptr)//we will destroy the ball every 
+	//{
+	//	return;
+	//}
+	//else
+	//{
+	//	App->map->ball = new element(App->tex->Load("maps/PokeBall_std.png"), 0, 0, 36, 36, 450, 750);
+	//}
 }
 
