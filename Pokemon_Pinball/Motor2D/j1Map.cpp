@@ -30,40 +30,42 @@ bool j1Map::Start()
 
 	map = (App->tex->Load("maps/sprites.png"));
 	SDL_Texture* pokeball = App->tex->Load("maps/PokeBall_std.png");
+	overlay2 = new element(map, 554, 32, 500, 450, 20, 10);
 	overlay = new element(map, 24, 32, 500, 500, 0, 10);
-	overlay2 = new element(map, 552, 32, 500, 450, 22, 10);
+	
 	cyndaquilcave = new element(map, 375, 1736, 82, 72, 135, 220);
-	background = new element(map,1058 , 32, 500, 829, 1, 1);
+	background = new element(map,1059 , 32, 500, 829, 0, 1);
 	ball.texture = pokeball;
 	ball.box = { 0,0,24,24 };
 	egg = new element(map, 655, 2837, 32, 38, 158, 194);
 
 
-	cyndaquil.PushBack({ 85,1732,60,76 });
-	cyndaquil.PushBack({ 148,1734,60,74 });
-	cyndaquil.PushBack({ 211,1734,60,76 });
-	cyndaquil.PushBack({ 273,1736,60,74 });
+	cyndaquil.PushBack({ 37,1731,66,76 });
+	cyndaquil.PushBack({ 103,1731,66,76 });
+	cyndaquil.PushBack({ 169,1731,70,76 });
+	cyndaquil.PushBack({ 235,1731,70,76 });
 	cyndaquil.speed = 0.0025f;
 
-	chikorita.PushBack({ 453,2052,39,85 });
-	chikorita.PushBack({ 494,2052,39,85 });
-	chikorita.speed = 0.002f;
+	chikorita.PushBack({ 397,2052,49,88 });
+	chikorita.PushBack({ 452,2052,49,88 });
+	chikorita.speed = 0.0015f;
 
 	makuhita.PushBack({ 690,1963,56,68 });
 	makuhita.PushBack({ 749,1963,62,66 });
-	makuhita.speed = 0.003f;
+	makuhita.PushBack({ 749,1963,62,66 });
+	makuhita.speed = 0.002f;
 
 	sharpedo.PushBack({ 300,1851,71,80 });
 	sharpedo.PushBack({ 375,1851,72,80 });
 	sharpedo.speed = 0.0025f;
 
-	spoink.PushBack({ 23,1613,40,750 });
-	spoink.PushBack({ 66,1613,40,79 });
+	spoink.PushBack({ 23,1609,40,100 });
+	spoink.PushBack({ 66,1609,40,100 });
 	spoink.speed = 0.0025f;
 	//left_flipper = new element(map,)
 
 	//name of the variable = App->tex->Load()
-	//ASIER TODO
+
 	//here we will load every sprite
 
 	return true;
@@ -314,15 +316,15 @@ void j1Map::Draw()
 
 	//App->render->Blit() utilitzar aquesta funció per totes les textures
 	App->render->Blit(background->texture, background->position.x, background->position.y, &background->box);
-	App->render->Blit(overlay->texture, overlay->position.x, overlay->position.y, &overlay->box);
 	App->render->Blit(overlay2->texture, overlay2->position.x, overlay2->position.y, &overlay2->box);
+	App->render->Blit(overlay->texture, overlay->position.x, overlay->position.y, &overlay->box);
 	App->render->Blit(cyndaquilcave->texture, cyndaquilcave->position.x, cyndaquilcave->position.y, &cyndaquilcave->box);
 	App->render->Blit(ball.texture, ball.position.x, ball.position.y , &ball.box);//18 = half of the box
 
 	App->render->Blit(egg->texture, egg->position.x, egg->position.y, &egg->box);
 
 	App->render->Blit(ball.texture, ball.position.x, ball.position.y, &ball.box);
-	App->render->Blit(map, 143, 272, &cyndaquil.GetCurrentFrame(), -0.1f);
+	App->render->Blit(map, 134, 272, &cyndaquil.GetCurrentFrame(), -0.1f);
 	App->render->Blit(map, 105, 421, &chikorita.GetCurrentFrame(), -0.1f);
 	App->render->Blit(map, 375, 537, &makuhita.GetCurrentFrame(), -0.1f);
 	App->render->Blit(map, 353, 332, &sharpedo.GetCurrentFrame(), -0.1f);
