@@ -89,17 +89,17 @@ bool j1Scene::Update(float dt)
 		//	App->map->r_flipper_joint->SetMotorSpeed(200);
 		//	
 		//// Ball Launcher 
-		//if ((App->input->GetKey(SDL_SCANCODE_S) == KEY_DOWN))
-		//	App->map->ball_launcher_joint->SetMotorSpeed(2);
-		//else if ((App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT))
-		//	App->map->ball_launcher_joint->SetMotorSpeed(6);
-		//else
-		//	App->map->ball_launcher_joint->SetMotorSpeed(-230);
+		if ((App->input->GetKey(SDL_SCANCODE_S) == KEY_DOWN))
+			App->map->ball_launcher_joint->SetMotorSpeed(2);
+		else if ((App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT))
+			App->map->ball_launcher_joint->SetMotorSpeed(6);
+		else
+			App->map->ball_launcher_joint->SetMotorSpeed(-230);
 	
 		// Create a new ball
 		if ((App->input->GetKey(SDL_SCANCODE_B) == KEY_DOWN))
 		{
-			NewBall();
+			App->map->NewBall();
 		}
 
 		// Draw ----------
@@ -135,7 +135,3 @@ bool j1Scene::CleanUp()
 	return true;
 }
 
-void j1Scene::NewBall()
-{
-	App->map->ball->physbody = App->physics->CreateCircle(200, 300, 10, b2BodyType::b2_dynamicBody);
-}

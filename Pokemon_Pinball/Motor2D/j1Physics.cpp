@@ -317,46 +317,16 @@ b2PrismaticJoint* j1Physics::CreatePrismaticJoint(PhysBody* bodyA, PhysBody* bod
 //{
 //	return NULL;
 //}
-b2RevoluteJoint* j1Physics::CreateRevoluteJoint(int radius, int* vects, int size, int posx, int posy, int desplacementx, int desplacementy, int upper_angle, int lower_angle, int max_torque, int speed)
+b2RevoluteJoint* j1Physics::CreateRevoluteJoint(PhysBody* bodyA, PhysBody* bodyB, int posx, int posy, int desplacementx, int desplacementy, int upper_angle, int lower_angle, int max_torque, int speed)
 {
 	//body and fixture defs - the common parts
 	b2BodyDef bodyDef;
 	b2FixtureDef fixtureDef;
 	fixtureDef.density = 1;
 
-	//two shapes
-	b2PolygonShape poligonShape;
-
-	b2Vec2* vect = new b2Vec2[size / 2];
-	for (uint i = 0; i < size / 2; ++i)
-	{
-		vect[i].x = PIXEL_TO_METERS(vects[i * 2 + 0]);
-		vect[i].y = PIXEL_TO_METERS(vects[i * 2 + 1]);
-	}
-
-	poligonShape.Set(vect, size / 2);
-
-
-	b2CircleShape circleShape;
-	circleShape.m_radius = PIXEL_TO_METERS(radius);
-
-	//make a box
-	bodyDef.position.Set(PIXEL_TO_METERS(posx), PIXEL_TO_METERS(posy));
-	fixtureDef.shape = &poligonShape;
-	bodyDef.type = b2_dynamicBody;
-	b2Body* m_bodyA = world->CreateBody(&bodyDef);
-	m_bodyA->CreateFixture(&fixtureDef);
-
-	//and a circle
-	bodyDef.position.Set(PIXEL_TO_METERS(posx), PIXEL_TO_METERS(posy));
-	fixtureDef.shape = &circleShape;
-	bodyDef.type = b2_staticBody;
-	b2Body* m_bodyB = world->CreateBody(&bodyDef);
-	m_bodyB->CreateFixture(&fixtureDef);
-
 	b2RevoluteJointDef revoluteJointDef;
-	revoluteJointDef.bodyA = m_bodyA;
-	revoluteJointDef.bodyB = m_bodyB;
+	revoluteJointDef.bodyA = bodyA->body;
+	revoluteJointDef.bodyB = bodyB->body;
 	revoluteJointDef.collideConnected = false;
 	revoluteJointDef.type = e_revoluteJoint;
 	revoluteJointDef.localAnchorA.Set(PIXEL_TO_METERS(desplacementx), PIXEL_TO_METERS(desplacementy));

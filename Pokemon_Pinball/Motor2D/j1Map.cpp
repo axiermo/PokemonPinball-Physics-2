@@ -45,7 +45,7 @@ void j1Map::DrawChainsBoard()
 	//ball
 	ball->physbody = App->physics->CreateCircle(400, 200, 11, b2BodyType::b2_dynamicBody);
 	ball->physbody->body->SetBullet(1);
-	balls.add(ball->physbody);
+	balls.add(ball);
 	
 	//walls
 	int board[176] = {
@@ -248,7 +248,8 @@ void j1Map::DrawChainsBoard()
 		204, 797,
 		183, 789
 	};
-	l_flipper_joint = App->physics->CreateRevoluteJoint(15, left_flipper, 22, 0, 0, 100, 100, 200, 150, 250, -90);
+
+	//l_flipper_joint = App->physics->CreateRevoluteJoint(10, left_flipper, 22, 169, 765, 10, 10, 200, 150, 10, -90);
 	
 	int right_flipper[22] = {
 		305, 896,
@@ -262,14 +263,18 @@ void j1Map::DrawChainsBoard()
 		351, 874,
 		338, 872,
 		315, 888
-	};
-	l_flipper_joint = App->physics->CreateRevoluteJoint(15, right_flipper, 22, 0, 0, 100, 100, 200, 150, 250, -90);
+	}; 
+	iPoint right_flipper_pos = {};
+	PhysBody* Ball_r_A = App->physics->CreateCircle(,,,b2BodyType::b2_staticBody);
+	PhysBody* Chain_r_B = App->physics->CreateChain(right_flipper_pos.x, right_flipper_pos.y, 50, 70, b2BodyType::b2_kinematicBody);
+
+	r_flipper_joint = App->physics->CreateRevoluteJoint(Ball_r_A, Chain_r_B, 300, 765, 300, 765, 200, 150, 10, -90);
 
 	//ball launcher
-	int pos_x = 450; int pos_y = 800;
-	PhysBody* A = App->physics->CreateRectangle(pos_x, pos_y, 10, 100, b2BodyType::b2_staticBody);
-	PhysBody* B = App->physics->CreateRectangle(pos_x, pos_y-30, 50, 70, b2BodyType::b2_kinematicBody);
-	ball_launcher_joint = App->physics->CreatePrismaticJoint(A, B, b2Vec2(1, 10), b2Vec2(1, -10), -40, -120, 248, 200);
+	iPoint ball_launcher_pos = {1,2};
+	PhysBody* Launcher_A = App->physics->CreateRectangle(ball_launcher_pos.x, ball_launcher_pos.y, 10, 100, b2BodyType::b2_staticBody);
+	PhysBody* Launcher_B = App->physics->CreateRectangle(ball_launcher_pos.x, ball_launcher_pos.y, 50, 70, b2BodyType::b2_kinematicBody);
+	ball_launcher_joint = App->physics->CreatePrismaticJoint(Launcher_A, Launcher_B, b2Vec2(1, 10), b2Vec2(1, -10), -40, -120, 248, 200);
 
 }
 
@@ -289,5 +294,17 @@ bool j1Map::CleanUp()
 	LOG("Unloading map");
 
 	return true;
+}
+
+void j1Map::NewBall()
+{
+	if (ball != nullptr)//we will destroy the ball every 
+	{
+		return;
+	}
+	else
+	{
+		App->map->ball = new element(App->tex->Load("maps/PokeBall_std.png"), 0, 0, 36, 36, 450, 750);
+	}
 }
 

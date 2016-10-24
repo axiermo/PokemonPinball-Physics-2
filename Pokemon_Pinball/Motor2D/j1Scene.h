@@ -32,7 +32,7 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
-	void NewBall();
+	
 
 private:
 	bool debug_mode;

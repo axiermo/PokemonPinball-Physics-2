@@ -1,3 +1,18 @@
-﻿  j1Scene.cpp
-  Motor2D.vcxproj -> C:\Users\Usuario\Documents\GitHub\PokemonPinball-Physics-2\Pokemon_Pinball\Debug\Dev Class7.5 Handout.exe
-  Motor2D.vcxproj -> C:\Users\Usuario\Documents\GitHub\PokemonPinball-Physics-2\Pokemon_Pinball\Debug\Dev Class7.5 Handout.pdb (Full PDB)
+﻿  j1Physics.cpp
+c:\users\paubv1\documents\github\pokemonpinball-physics-2\pokemon_pinball\motor2d\j1physics.cpp(224): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+c:\users\paubv1\documents\github\pokemonpinball-physics-2\pokemon_pinball\motor2d\j1physics.cpp(225): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+c:\users\paubv1\documents\github\pokemonpinball-physics-2\pokemon_pinball\motor2d\j1physics.cpp(268): warning C4018: '<': signed/unsigned mismatch
+c:\users\paubv1\documents\github\pokemonpinball-physics-2\pokemon_pinball\motor2d\j1physics.cpp(309): warning C4244: '=': conversion from 'int' to 'float32', possible loss of data
+c:\users\paubv1\documents\github\pokemonpinball-physics-2\pokemon_pinball\motor2d\j1physics.cpp(346): warning C4244: '=': conversion from 'int' to 'float32', possible loss of data
+c:\users\paubv1\documents\github\pokemonpinball-physics-2\pokemon_pinball\motor2d\j1physics.cpp(377): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+c:\users\paubv1\documents\github\pokemonpinball-physics-2\pokemon_pinball\motor2d\j1physics.cpp(378): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+c:\users\paubv1\documents\github\pokemonpinball-physics-2\pokemon_pinball\motor2d\j1physics.cpp(384): warning C4244: 'return': conversion from 'float32' to 'int', possible loss of data
+  Generating Code...
+  Compiling...
+  j1Map.cpp
+c:\users\paubv1\documents\github\pokemonpinball-physics-2\pokemon_pinball\motor2d\j1map.cpp(251): error C2660: 'j1Physics::CreateRevoluteJoint': function does not take 11 arguments
+c:\users\paubv1\documents\github\pokemonpinball-physics-2\pokemon_pinball\motor2d\j1map.cpp(266): error C2660: 'j1Physics::CreateRevoluteJoint': function does not take 11 arguments
+  Generating Code...
+  Skipping... (no relevant changes detected)
+  j1Scene.cpp
+  j1App.cpp
