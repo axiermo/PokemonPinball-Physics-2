@@ -28,7 +28,7 @@ bool j1Map::Start()
 {
 	ball_point = { 475,600 };
 
-	SDL_Texture* map = (App->tex->Load("maps/sprites.png"));
+	map = (App->tex->Load("maps/sprites.png"));
 	SDL_Texture* pokeball = App->tex->Load("maps/PokeBall_std.png");
 	overlay = new element(map, 24, 32, 500, 500, 0, 10);
 	overlay2 = new element(map, 552, 32, 500, 450, 22, 10);
@@ -36,7 +36,30 @@ bool j1Map::Start()
 	background = new element(map,1058 , 32, 500, 829, 1, 1);
 	ball.texture = pokeball;
 	ball.box = { 0,0,24,24 };
-	
+	egg = new element(map, 655, 2837, 32, 38, 158, 194);
+
+
+	cyndaquil.PushBack({ 85,1732,60,76 });
+	cyndaquil.PushBack({ 148,1734,60,74 });
+	cyndaquil.PushBack({ 211,1734,60,76 });
+	cyndaquil.PushBack({ 273,1736,60,74 });
+	cyndaquil.speed = 0.0025f;
+
+	chikorita.PushBack({ 453,2052,39,85 });
+	chikorita.PushBack({ 494,2052,39,85 });
+	chikorita.speed = 0.002f;
+
+	makuhita.PushBack({ 690,1963,56,68 });
+	makuhita.PushBack({ 749,1963,62,66 });
+	makuhita.speed = 0.003f;
+
+	sharpedo.PushBack({ 300,1851,71,80 });
+	sharpedo.PushBack({ 375,1851,72,80 });
+	sharpedo.speed = 0.0025f;
+
+	spoink.PushBack({ 23,1613,40,750 });
+	spoink.PushBack({ 66,1613,40,79 });
+	spoink.speed = 0.0025f;
 	//left_flipper = new element(map,)
 
 	//name of the variable = App->tex->Load()
@@ -295,6 +318,15 @@ void j1Map::Draw()
 	App->render->Blit(overlay2->texture, overlay2->position.x, overlay2->position.y, &overlay2->box);
 	App->render->Blit(cyndaquilcave->texture, cyndaquilcave->position.x, cyndaquilcave->position.y, &cyndaquilcave->box);
 	App->render->Blit(ball.texture, ball.position.x, ball.position.y , &ball.box);//18 = half of the box
+
+	App->render->Blit(egg->texture, egg->position.x, egg->position.y, &egg->box);
+
+	App->render->Blit(ball.texture, ball.position.x, ball.position.y, &ball.box);
+	App->render->Blit(map, 143, 272, &cyndaquil.GetCurrentFrame(), -0.1f);
+	App->render->Blit(map, 105, 421, &chikorita.GetCurrentFrame(), -0.1f);
+	App->render->Blit(map, 375, 537, &makuhita.GetCurrentFrame(), -0.1f);
+	App->render->Blit(map, 353, 332, &sharpedo.GetCurrentFrame(), -0.1f);
+	App->render->Blit(map, 456, 724, &spoink.GetCurrentFrame(), -0.1f);
 }
 
 // Called before quitting

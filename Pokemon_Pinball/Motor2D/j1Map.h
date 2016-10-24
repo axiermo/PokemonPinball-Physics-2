@@ -6,7 +6,7 @@
 #include "j1App.h"
 #include "j1Physics.h"
 #include "j1Scene.h"
-
+#include "Animation.h"
 
 class App;
 class j1Map : public j1Module
@@ -72,12 +72,17 @@ public:
 	// launcher
 	b2PrismaticJoint*    ball_launcher_joint;
 
-	
+	SDL_Texture* map = nullptr;
 	element left_flipper;
 	element right_flipper;
 	element ball;
 	element ball_launcher;
-
+	Animation cyndaquil;
+	Animation chikorita;
+	Animation makuhita;
+	Animation sharpedo;
+	Animation spoink;
+	element* egg;
 	element* background;
 	element* overlay;
 	element* overlay2;
