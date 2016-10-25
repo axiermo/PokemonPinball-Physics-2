@@ -5,6 +5,7 @@
 #include "j1FileSystem.h"
 #include "j1Textures.h"
 #include "j1Map.h"
+#include "j1Physics.h"
 #include <math.h>
 
 j1Map::j1Map() : j1Module()
@@ -33,10 +34,11 @@ bool j1Map::Start()
 	overlay2 = new element(map, 554, 32, 500, 450, 20, 10);
 	overlay = new element(map, 24, 32, 500, 500, 0, 10);
 	
-	cyndaquilcave = new element(map, 375, 1736, 82, 72, 135, 220);
-	background = new element(map,1059 , 32, 500, 829, 0, 1);
 	ball.texture = pokeball;
 	ball.box = { 0,0,24,24 };
+
+	cyndaquilcave = new element(map, 375, 1736, 82, 72, 135, 220);
+	background = new element(map,1059 , 32, 500, 829, 0, 1);
 	egg = new element(map, 655, 2837, 32, 38, 158, 194);
 
 
@@ -75,9 +77,10 @@ void j1Map::DrawChainsBoard()
 {
 	//ball
 	//ball = new element(App->tex->Load("maps/PokeBall_std.png"), 0, 0, 36, 36, ball_point.x, ball_point.y);
-	ball.physbody = App->physics->CreateCircle(ball_point.x, ball_point.y, 12, b2BodyType::b2_dynamicBody);
+	ball.physbody = App->physics->CreateCircle(ball_point.x+3, ball_point.y, 12, b2BodyType::b2_dynamicBody,0x0002,0x0001);
 	ball.position = { ball_point.x,ball_point.y };
-	
+	//the 0x0000 things: 0x0001 es el background, el 2 es la pilota i el 3 son esl flippers i els launchers,
+	//el primer terme es el que identifica el objecte que crearà i lo segon es amb quin tipus de bodys colisiona
 	//walls
 	int board[176] = {
 		0, 829,
@@ -170,7 +173,7 @@ void j1Map::DrawChainsBoard()
 		0, 0
 
 	};
-	PhysBody* background = App->physics->CreateChain(0, 0, board, 176, b2BodyType::b2_staticBody);
+	PhysBody* background = App->physics->CreateChain(0, 0, board, 176, b2BodyType::b2_staticBody,0x0001,0x0002);
 	int L_left[24] = {
 		195, 902,
 		100, 842,
@@ -287,26 +290,27 @@ void j1Map::DrawChainsBoard()
 		182, 784
 	};
 
+
 	iPoint left_flipper_pos = {170,763};
-	PhysBody* Ball_l_A = App->physics->CreateCircle(left_flipper_pos.x, left_flipper_pos.y, 10, b2BodyType::b2_staticBody);
-	PhysBody* Chain_l_B = App->physics->CreateRectangle(left_flipper_pos.x, left_flipper_pos.y, 75, 15, b2BodyType::b2_dynamicBody);
+	PhysBody* Ball_l_A = App->physics->CreateCircle(left_flipper_pos.x, left_flipper_pos.y, 10, b2BodyType::b2_staticBody,0x0000,0x0000);
+	PhysBody* Chain_l_B = App->physics->CreateRectangle(left_flipper_pos.x, left_flipper_pos.y, 75, 15, b2BodyType::b2_dynamicBody,0x0001,0x0002);
 
 	l_flipper_joint = App->physics->CreateRevoluteJoint(Ball_l_A, Chain_l_B, -20.0f, 0.0f, 30,-15, 300, 0);
 
 	//l_flipper_joint = App->physics->CreateRevoluteJoint(10, left_flipper, 22, 169, 765, 10, 10, 200, 150, 10, -90);
 	
 	iPoint right_flipper_pos = {305,763};
-	PhysBody* Ball_r_A = App->physics->CreateCircle(right_flipper_pos.x, right_flipper_pos.y,10,b2BodyType::b2_staticBody);
-	PhysBody* Chain_r_B = App->physics->CreateRectangle(right_flipper_pos.x , right_flipper_pos.y, 75, 15, b2BodyType::b2_dynamicBody);
+	PhysBody* Ball_r_A = App->physics->CreateCircle(right_flipper_pos.x, right_flipper_pos.y,10,b2BodyType::b2_staticBody, 0x0000, 0x0000);
+	PhysBody* Chain_r_B = App->physics->CreateRectangle(right_flipper_pos.x , right_flipper_pos.y, 75, 15, b2BodyType::b2_dynamicBody, 0x0001, 0x0002);
 	//PhysBody* Chain_r_B = App->physics->CreateChain(right_flipper_pos.x, right_flipper_pos.y, right_flipper, 10, b2BodyType::b2_dynamicBody);
 
 	r_flipper_joint = App->physics->CreateRevoluteJoint(Ball_r_A, Chain_r_B,20.0f, 0.0f, 15, -30, 300, 0);
 
 	//ball launcher
 	iPoint ball_launcher_pos = {475,780};
-	PhysBody* Launcher_A = App->physics->CreateRectangle(ball_launcher_pos.x, ball_launcher_pos.y, 10, 100, b2BodyType::b2_staticBody);
-	PhysBody* Launcher_B = App->physics->CreateRectangle(ball_launcher_pos.x, ball_launcher_pos.y-100, 50, 10, b2BodyType::b2_staticBody);
-	ball_launcher_joint = App->physics->CreatePrismaticJoint(Launcher_A, Launcher_B, b2Vec2(0, 0), b2Vec2(0, 0),-5.0f,1.0f,1.0f,0.0f);
+	PhysBody* Launcher_A = App->physics->CreateRectangle(ball_launcher_pos.x, ball_launcher_pos.y, 10, 60, b2BodyType::b2_staticBody,0x0003,0x0002);
+	PhysBody* Launcher_B = App->physics->CreateRectangle(ball_launcher_pos.x, ball_launcher_pos.y-60, 25, 10, b2BodyType::b2_staticBody,0x0003,0x0002);
+	ball_launcher_joint = App->physics->CreatePrismaticJoint(Launcher_A, Launcher_B, b2Vec2(1, 10), b2Vec2(1, -10), -40, -120, 248, 200);
 
 }
 
@@ -342,7 +346,8 @@ bool j1Map::CleanUp()
 void j1Map::NewBall()
 {
 	ball.position = { 200,200 };
-	
+	ball.physbody = ball.physbody = App->physics->CreateCircle(ball.position.x, ball.position.y, 11, b2BodyType::b2_dynamicBody,0x0002,0x0001);
+
 	//ball.position = { ball_point.x,ball_point.y };
 	
 	

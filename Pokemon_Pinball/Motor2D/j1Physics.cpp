@@ -11,7 +11,7 @@
 
 
 #define GRAVITY_X 0.0f
-#define GRAVITY_Y -0.01f
+#define GRAVITY_Y -0.03f
 
 #ifdef _DEBUG
 #pragma comment( lib, "Box2D/libx86/Debug/Box2D.lib" )
@@ -177,7 +177,7 @@ bool j1Physics::CleanUp()
 	return true;
 }
 
-PhysBody * j1Physics::CreateCircle(int x, int y, int radius,b2BodyType bodytype)
+PhysBody * j1Physics::CreateCircle(int x, int y, int radius,b2BodyType bodytype,uint mask, uint category)
 {
 	b2BodyDef body;
 	body.type = bodytype;
@@ -189,8 +189,8 @@ PhysBody * j1Physics::CreateCircle(int x, int y, int radius,b2BodyType bodytype)
 	shape.m_radius = PIXEL_TO_METERS(radius);
 	b2FixtureDef fixture;
 	fixture.shape = &shape;
-	fixture.density = 0.01f;
-	fixture.restitution = 0.01f;
+	fixture.density = 0.5f;
+	fixture.restitution = 0.33f;
 
 	b->CreateFixture(&fixture);
 
@@ -199,10 +199,11 @@ PhysBody * j1Physics::CreateCircle(int x, int y, int radius,b2BodyType bodytype)
 	b->SetUserData(pbody);
 	pbody->width = pbody->height = radius;
 	world->CreateBody(&body);
+
 	return pbody;
 }
 
-PhysBody* j1Physics::CreateRectangle(int x, int y, int width, int height, b2BodyType bodytype)
+PhysBody* j1Physics::CreateRectangle(int x, int y, int width, int height, b2BodyType bodytype, uint mask, uint category)
 {
 	b2BodyDef body;
 	body.type = bodytype;
@@ -215,7 +216,6 @@ PhysBody* j1Physics::CreateRectangle(int x, int y, int width, int height, b2Body
 	b2FixtureDef fixture;
 	fixture.shape = &box;
 	fixture.density = 1.0f;
-
 	b->CreateFixture(&fixture);
 
 	PhysBody* pbody = new PhysBody();
@@ -227,7 +227,7 @@ PhysBody* j1Physics::CreateRectangle(int x, int y, int width, int height, b2Body
 	return pbody;
 }
 
-PhysBody * j1Physics::CreateRectangleSensor(int x, int y, int width, int height)
+PhysBody * j1Physics::CreateRectangleSensor(int x, int y, int width, int height, uint mask, uint category)
 {
 	b2BodyDef body;
 	body.type = b2_staticBody;
@@ -242,8 +242,13 @@ PhysBody * j1Physics::CreateRectangleSensor(int x, int y, int width, int height)
 	fixture.shape = &box;
 	fixture.density = 1.0f;
 	fixture.isSensor = true;
+	fixture.filter.maskBits = mask;
+	fixture.filter.categoryBits = category;
+	fixture.filter.maskBits = mask;
+	fixture.filter.categoryBits = category;
 
 	b->CreateFixture(&fixture);
+
 
 	PhysBody* pbody = new PhysBody();
 	pbody->body = b;
@@ -254,7 +259,7 @@ PhysBody * j1Physics::CreateRectangleSensor(int x, int y, int width, int height)
 	return pbody;
 }
 
-PhysBody * j1Physics::CreateChain(int x, int y, int* points, int size, b2BodyType bodytype)
+PhysBody * j1Physics::CreateChain(int x, int y, int* points, int size, b2BodyType bodytype, uint mask, uint category)
 {
 	b2BodyDef body;
 	body.type = bodytype;
@@ -275,11 +280,13 @@ PhysBody * j1Physics::CreateChain(int x, int y, int* points, int size, b2BodyTyp
 
 	b2FixtureDef fixture;
 	fixture.shape = &shape;
-	//hauriem de mirar altres variables a modificar
+	fixture.filter.maskBits = mask;
+	fixture.filter.categoryBits = category;
 
 	b->CreateFixture(&fixture);
 
 	delete p;
+
 
 	PhysBody* pbody = new PhysBody();
 	pbody->body = b;
@@ -289,28 +296,33 @@ PhysBody * j1Physics::CreateChain(int x, int y, int* points, int size, b2BodyTyp
 	return pbody;
 }
 
-
-
 b2PrismaticJoint* j1Physics::CreatePrismaticJoint(PhysBody* bodyA, PhysBody* bodyB, b2Vec2 anchorA, b2Vec2 anchorB, float low_trams, float upp_trans, float max_motor_force, float speed)
 {
 	b2PrismaticJointDef def;
 
 	def.bodyA = bodyA->body;
 	def.bodyB = bodyB->body;
-
-	def.localAnchorA.Set(PIXEL_TO_METERS(anchorA.x), PIXEL_TO_METERS(anchorA.y));
-	def.localAnchorB.Set(PIXEL_TO_METERS(anchorB.x), PIXEL_TO_METERS(anchorB.y));
+	def.collideConnected = false;
+	def.localAnchorB.Set(PIXEL_TO_METERS(anchorA.x), PIXEL_TO_METERS(anchorA.y));
+	def.localAnchorA.Set(PIXEL_TO_METERS(anchorB.x), PIXEL_TO_METERS(anchorB.y));
 
 	//jointDef.Initialize(myBodyA, myBodyB, myBodyA->GetWorldCenter(), worldAxis);
-	def.lowerTranslation = low_trams;
-	def.upperTranslation = upp_trans;
 	def.enableLimit = true;
-	def.maxMotorForce = max_motor_force;
-	def.motorSpeed = speed;
+	def.lowerTranslation = PIXEL_TO_METERS(low_trams);
+	def.upperTranslation = PIXEL_TO_METERS(upp_trans);
+	def.type = e_prismaticJoint;
+	
 	def.enableMotor = true;
+	def.maxMotorForce = max_motor_force;
+	def.motorSpeed = speed*DEGTORAD;
+	
+
+	
 	b2PrismaticJoint* prismatic_joint = (b2PrismaticJoint*)world->CreateJoint(&def);
+	
 	return prismatic_joint;
 }
+
 b2RevoluteJoint* j1Physics::CreateRevoluteJoint(PhysBody* bodyA, PhysBody* bodyB,float anchor_x, float anchor_y, int upper_angle, int lower_angle, int max_torque, int speed)
 {
 
