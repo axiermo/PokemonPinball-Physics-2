@@ -1,4 +1,8 @@
-﻿  j1Map.cpp
-c:\users\paubv1\documents\github\pokemonpinball-physics-2\pokemon_pinball\motor2d\animation.h(35): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-  Motor2D.vcxproj -> C:\Users\paubv1\Documents\GitHub\PokemonPinball-Physics-2\Pokemon_Pinball\Debug\Dev Class7.5 Handout.exe
-  Motor2D.vcxproj -> C:\Users\paubv1\Documents\GitHub\PokemonPinball-Physics-2\Pokemon_Pinball\Debug\Dev Class7.5 Handout.pdb (Full PDB)
+﻿  j1Scene.cpp
+c:\users\asier\documents\github\test\pokemon_pinball\motor2d\animation.h(35): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+c:\users\asier\documents\github\test\pokemon_pinball\motor2d\j1scene.cpp(81): warning C4305: 'argument': truncation from 'double' to 'float32'
+c:\users\asier\documents\github\test\pokemon_pinball\motor2d\j1scene.cpp(83): warning C4305: 'argument': truncation from 'double' to 'float32'
+c:\users\asier\documents\github\test\pokemon_pinball\motor2d\j1scene.cpp(87): warning C4305: 'argument': truncation from 'double' to 'float32'
+c:\users\asier\documents\github\test\pokemon_pinball\motor2d\j1scene.cpp(89): warning C4305: 'argument': truncation from 'double' to 'float32'
+  Motor2D.vcxproj -> C:\Users\asier\Documents\GitHub\test\Pokemon_Pinball\Debug\Dev Class7.5 Handout.exe
+  Motor2D.vcxproj -> C:\Users\asier\Documents\GitHub\test\Pokemon_Pinball\Debug\Dev Class7.5 Handout.pdb (Full PDB)

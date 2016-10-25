@@ -174,59 +174,156 @@ void j1Map::DrawChainsBoard()
 
 	};
 	PhysBody* background = App->physics->CreateChain(0, 0, board, 176, b2BodyType::b2_staticBody,0x0001,0x0002);
-	int L_left[24] = {
-		195, 902,
-		100, 842,
-		96, 834,
-		96, 751,
-		101, 744,
-		108, 744,
-		112, 750,
-		112, 806,
-		112, 813,
-		116, 817,
-		208, 876,
-		208, 890
+	int Right_triangle[20] = {
+		300, 698,
+		328, 655,
+		332, 649,
+		336, 647,
+		340, 648,
+		341, 651,
+		341, 690,
+		305, 712,
+		299, 709,
+		298, 704
 	};
-
-	int L_right[24]{
-		347, 901,
-		438, 841,
-		443, 834,
-		442, 748,
-		432, 746,
-		429, 753,
-		428, 812,
-		422, 823,
-		408, 832,
-		334, 880,
-		333, 887,
-		338, 894
-
+	PhysBody* rightriangle = App->physics->CreateChain(0, 0, Right_triangle, 20, b2BodyType::b2_staticBody, 0x0001, 0x0002);
+	int L_right[20] = {
+		308, 750,
+		321, 769,
+		379, 732,
+		384, 726,
+		384, 662,
+		370, 662,
+		370, 701,
+		368, 710,
+		360, 716,
+		324, 739
 	};
-
-	int triangle_right[18] = {
-		342, 822,
-		343, 808,
-		381, 750,
-		388, 745,
-		393, 752,
-		392, 792,
-		388, 796,
-		381, 801,
-		352, 820
+	PhysBody* LRight = App->physics->CreateChain(0, 0, L_right, 20, b2BodyType::b2_staticBody, 0x0001, 0x0002);
+	int SharkpedoWalls[68] = {
+		323, 189,
+		323, 227,
+		344, 237,
+		359, 249,
+		360, 284,
+		329, 349,
+		300, 400,
+		300, 417,
+		315, 426,
+		335, 389,
+		347, 357,
+		355, 340,
+		374, 345,
+		374, 371,
+		338, 440,
+		338, 469,
+		347, 462,
+		358, 432,
+		368, 413,
+		376, 402,
+		389, 402,
+		394, 409,
+		372, 478,
+		372, 504,
+		389, 472,
+		400, 448,
+		408, 412,
+		411, 391,
+		412, 352,
+		407, 315,
+		390, 263,
+		368, 229,
+		354, 211,
+		334, 196
 	};
-	
-	int triangle_left[16] = {
-		148, 793,
-		146, 753,
-		150, 745,
-		155, 747,
-		196, 807,
-		194, 817,
-		190, 822,
-		157, 800
+	PhysBody* SharkWalls = App->physics->CreateChain(0, 0, SharkpedoWalls, 68, b2BodyType::b2_staticBody, 0x0001, 0x0002);
+	int CyndaquilCaveWalls[56] = {
+		144, 361,
+		138, 337,
+		136, 285,
+		136, 255,
+		153, 212,
+		177, 187,
+		197, 175,
+		215, 170,
+		214, 221,
+		209, 228,
+		209, 273,
+		213, 295,
+		219, 314,
+		228, 335,
+		234, 345,
+		233, 361,
+		206, 362,
+		197, 355,
+		201, 285,
+		201, 267,
+		150, 267,
+		148, 299,
+		150, 317,
+		153, 336,
+		159, 352,
+		160, 378,
+		155, 383,
+		148, 377
 	};
+	PhysBody* CyndaWalls = App->physics->CreateChain(0, 0, CyndaquilCaveWalls, 56, b2BodyType::b2_staticBody, 0x0001, 0x0002);
+	int WallOverBridge[26] = {
+		63, 312,
+		72, 269,
+		85, 244,
+		97, 225,
+		112, 210,
+		113, 231,
+		105, 247,
+		100, 264,
+		97, 283,
+		96, 316,
+		97, 336,
+		102, 371,
+		84, 346
+	};
+	PhysBody* WallOverBridg = App->physics->CreateChain(0, 0, WallOverBridge, 26, b2BodyType::b2_staticBody, 0x0001, 0x0002);
+	int WallUnderBridge[22] = {
+		61, 400,
+		66, 428,
+		76, 457,
+		88, 485,
+		103, 512,
+		131, 547,
+		153, 529,
+		153, 507,
+		140, 487,
+		128, 460,
+		119, 441
+	};
+	PhysBody* WallUnderBridg = App->physics->CreateChain(0, 0, WallUnderBridge, 22, b2BodyType::b2_staticBody, 0x0001, 0x0002);
+	int triangle_left[20] = {
+		127, 691,
+		127, 654,
+		128, 649,
+		132, 647,
+		135, 649,
+		170, 701,
+		171, 706,
+		169, 710,
+		163, 712,
+		136, 696
+	};
+	PhysBody* Triangleleft = App->physics->CreateChain(0, 0, triangle_left, 20, b2BodyType::b2_staticBody, 0x0001, 0x0002);
+	int L_left[20] = {
+		152, 773,
+		163, 752,
+		106, 717,
+		99, 710,
+		95, 701,
+		95, 662,
+		82, 662,
+		82, 724,
+		86, 730,
+		102, 741
+	};
+	PhysBody* LLeft = App->physics->CreateChain(0, 0, L_left, 20, b2BodyType::b2_staticBody, 0x0001, 0x0002);
 
 	int topwall[38] = {
 		120, 446,
@@ -293,18 +390,18 @@ void j1Map::DrawChainsBoard()
 
 	iPoint left_flipper_pos = {170,763};
 	PhysBody* Ball_l_A = App->physics->CreateCircle(left_flipper_pos.x, left_flipper_pos.y, 10, b2BodyType::b2_staticBody,0x0000,0x0000);
-	PhysBody* Chain_l_B = App->physics->CreateRectangle(left_flipper_pos.x, left_flipper_pos.y, 75, 15, b2BodyType::b2_dynamicBody,0x0001,0x0002);
+	PhysBody* Chain_l_B = App->physics->CreateRectangle(left_flipper_pos.x, left_flipper_pos.y, 58, 15, b2BodyType::b2_dynamicBody,0x0001,0x0002);
 
-	l_flipper_joint = App->physics->CreateRevoluteJoint(Ball_l_A, Chain_l_B, -20.0f, 0.0f, 30,-15, 300, 0);
+	l_flipper_joint = App->physics->CreateRevoluteJoint(Ball_l_A, Chain_l_B, -24.0f, 0.0f, 30,-15, 300, 0);
 
 	//l_flipper_joint = App->physics->CreateRevoluteJoint(10, left_flipper, 22, 169, 765, 10, 10, 200, 150, 10, -90);
 	
 	iPoint right_flipper_pos = {305,763};
 	PhysBody* Ball_r_A = App->physics->CreateCircle(right_flipper_pos.x, right_flipper_pos.y,10,b2BodyType::b2_staticBody, 0x0000, 0x0000);
-	PhysBody* Chain_r_B = App->physics->CreateRectangle(right_flipper_pos.x , right_flipper_pos.y, 75, 15, b2BodyType::b2_dynamicBody, 0x0001, 0x0002);
+	PhysBody* Chain_r_B = App->physics->CreateRectangle(right_flipper_pos.x , right_flipper_pos.y, 58, 15, b2BodyType::b2_dynamicBody, 0x0001, 0x0002);
 	//PhysBody* Chain_r_B = App->physics->CreateChain(right_flipper_pos.x, right_flipper_pos.y, right_flipper, 10, b2BodyType::b2_dynamicBody);
 
-	r_flipper_joint = App->physics->CreateRevoluteJoint(Ball_r_A, Chain_r_B,20.0f, 0.0f, 15, -30, 300, 0);
+	r_flipper_joint = App->physics->CreateRevoluteJoint(Ball_r_A, Chain_r_B,24.0f, 0.0f, 15, -30, 300, 0);
 
 	//ball launcher
 	iPoint ball_launcher_pos = {475,780};
@@ -318,8 +415,8 @@ void j1Map::Draw()
 {	
 	ball.physbody->GetPosition(ball.position.x, ball.position.y);
 
-	//App->render->Blit() utilitzar aquesta funció per totes les textures
-	App->render->Blit(background->texture, background->position.x, background->position.y, &background->box);
+	
+	//App->render->Blit(background->texture, background->position.x, background->position.y, &background->box);
 	App->render->Blit(overlay2->texture, overlay2->position.x, overlay2->position.y, &overlay2->box);
 	App->render->Blit(overlay->texture, overlay->position.x, overlay->position.y, &overlay->box);
 	App->render->Blit(cyndaquilcave->texture, cyndaquilcave->position.x, cyndaquilcave->position.y, &cyndaquilcave->box);
@@ -345,7 +442,7 @@ bool j1Map::CleanUp()
 
 void j1Map::NewBall()
 {
-	ball.position = { 200,200 };
+	ball.position = { 378,640 };
 	ball.physbody = ball.physbody = App->physics->CreateCircle(ball.position.x, ball.position.y, 11, b2BodyType::b2_dynamicBody,0x0002,0x0001);
 
 	//ball.position = { ball_point.x,ball_point.y };

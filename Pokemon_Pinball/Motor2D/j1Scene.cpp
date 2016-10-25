@@ -89,7 +89,7 @@ bool j1Scene::Update(float dt)
 			App->map->r_flipper_joint->SetMotorSpeed(-0.8);
 			
 		//// Ball Launcher 
-		if ((App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) || (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT))
+		if ((App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) || (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_REPEAT))
 			App->map->ball_launcher_joint->SetMotorSpeed(10);
 		else 
 			App->map->ball_launcher_joint->SetMotorSpeed(-250);
