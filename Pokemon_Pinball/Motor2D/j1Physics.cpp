@@ -11,7 +11,7 @@
 
 
 #define GRAVITY_X 0.0f
-#define GRAVITY_Y -0.03f
+#define GRAVITY_Y -0.5f
 
 #ifdef _DEBUG
 #pragma comment( lib, "Box2D/libx86/Debug/Box2D.lib" )
@@ -303,8 +303,9 @@ b2PrismaticJoint* j1Physics::CreatePrismaticJoint(PhysBody* bodyA, PhysBody* bod
 	def.bodyA = bodyA->body;
 	def.bodyB = bodyB->body;
 	def.collideConnected = false;
-	def.localAnchorB.Set(PIXEL_TO_METERS(anchorA.x), PIXEL_TO_METERS(anchorA.y));
-	def.localAnchorA.Set(PIXEL_TO_METERS(anchorB.x), PIXEL_TO_METERS(anchorB.y));
+	def.localAxisA.Set(0, 1);
+	def.localAnchorA.Set(PIXEL_TO_METERS(anchorA.x), PIXEL_TO_METERS(anchorA.y));
+	def.localAnchorB.Set(PIXEL_TO_METERS(anchorB.x), PIXEL_TO_METERS(anchorB.y));
 
 	//jointDef.Initialize(myBodyA, myBodyB, myBodyA->GetWorldCenter(), worldAxis);
 	def.enableLimit = true;

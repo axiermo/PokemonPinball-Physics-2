@@ -404,10 +404,12 @@ void j1Map::DrawChainsBoard()
 	r_flipper_joint = App->physics->CreateRevoluteJoint(Ball_r_A, Chain_r_B,24.0f, 0.0f, 15, -30, 300, 0);
 
 	//ball launcher
-	iPoint ball_launcher_pos = {475,780};
-	PhysBody* Launcher_A = App->physics->CreateRectangle(ball_launcher_pos.x, ball_launcher_pos.y, 10, 60, b2BodyType::b2_staticBody,0x0003,0x0002);
-	PhysBody* Launcher_B = App->physics->CreateRectangle(ball_launcher_pos.x, ball_launcher_pos.y-60, 25, 10, b2BodyType::b2_staticBody,0x0003,0x0002);
-	ball_launcher_joint = App->physics->CreatePrismaticJoint(Launcher_A, Launcher_B, b2Vec2(1, 10), b2Vec2(1, -10), -40, -120, 248, 200);
+	iPoint ball_launcher_pos = { 475,780 };
+	PhysBody* Launcher_A = App->physics->CreateRectangle(ball_launcher_pos.x, ball_launcher_pos.y, 10, 20, b2BodyType::b2_staticBody, 0x0001, 0x0001);
+	PhysBody* Launcher_B = App->physics->CreateRectangle(ball_launcher_pos.x, ball_launcher_pos.y, 20, 40, b2BodyType::b2_dynamicBody, 0x0001, 0x0001);
+
+	ball_launcher_joint = App->physics->CreatePrismaticJoint(Launcher_A, Launcher_B, b2Vec2(1, -50), b2Vec2(1, 30), 0, 15, 500, 0);
+
 
 }
 
@@ -442,7 +444,7 @@ bool j1Map::CleanUp()
 
 void j1Map::NewBall()
 {
-	ball.position = { 378,640 };
+	ball.position = { 475,600 };
 	ball.physbody = ball.physbody = App->physics->CreateCircle(ball.position.x, ball.position.y, 11, b2BodyType::b2_dynamicBody,0x0002,0x0001);
 
 	//ball.position = { ball_point.x,ball_point.y };
