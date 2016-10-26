@@ -19,24 +19,31 @@ ModuleSceneIntro::~ModuleSceneIntro()
 bool ModuleSceneIntro::Start()
 {
 
-	App->scene_intro->DrawChainsBoard();
+	
 	App->audio->PlayMusic("music/SoundTrack.ogg");
 	
 	
 	LOG("Loading Intro assets");
 
 	//ball_point = { 475,600 };
-	top = false;
 
 	map = (App->textures->Load("sprites/sprites.png"));
 	SDL_Texture* pokeball = App->textures->Load("sprites/PokeBall_std.png");
 	SDL_Texture* LFlipper = App->textures->Load("sprites/left_flipper.png");
 	SDL_Texture* RFlipper = App->textures->Load("sprites/right_flipper.png");
+
+	top = false;
+	ball.physbody = App->physics->CreateCircle(475, 600, 11, b2BodyType::b2_dynamicBody);
+	ball.position = { 475,600 };
+	ball.physbody->listener = this;
+	ball.texture = pokeball;
+	ball.box = { 0,0,24,24 };
+
+	
 	overlay2 = new element(map, 554, 32, 500, 450, 20, 10);
 	overlay = new element(map, 24, 32, 500, 500, 0, 10);
 
-	ball.texture = pokeball;
-	ball.box = { 0,0,24,24 };
+	
 	left_flipper.texture = LFlipper;
 	left_flipper.box = { 0,0,61,23 };
 	right_flipper.texture = RFlipper;
@@ -84,6 +91,7 @@ bool ModuleSceneIntro::Start()
 	spoink.PushBack({ 66,1609,40,100 });
 	spoink.speed = 0.025f;
 	
+	App->scene_intro->DrawChainsBoard();
 	
 	return true;
 }
@@ -94,10 +102,8 @@ bool ModuleSceneIntro::CleanUp()
 	return true;
 }
 update_status ModuleSceneIntro::Update(){
-	//Activate the correct chains
 	
-
-
+	//Activate the correct chains
 	TopOrUnder();
 
 	// GAMEPLAY INPUTS
@@ -123,15 +129,14 @@ update_status ModuleSceneIntro::Update(){
 	// Create a new ball
 	if ((App->input->GetKey(SDL_SCANCODE_B) == KEY_DOWN))
 	{
+		top = false;
 		ball.physbody = App->physics->CreateCircle(475, 600, 11, b2BodyType::b2_dynamicBody);
 		ball.position = { 475,600 };
 		ball.physbody->listener = this;
 	}
 
 	// Draw ----------
-	
 		Draw();
-
 	// ---------------
 	int x, y;
 	App->input->GetMousePosition(x, y);
@@ -152,7 +157,7 @@ void ModuleSceneIntro::DrawChainsBoard()
 	//sensors
 	RigthEntrance = App->physics->CreateRectangleSensor(345, 398, 18, 0);
 	RigthEntrance->body->SetActive(true);
-	LeftEntrance = App->physics->CreateRectangleSensor(45, 321, 25, 0);
+	LeftEntrance = App->physics->CreateRectangleSensor(90, 398, 25, 0);
 	LeftEntrance->body->SetActive(true);
 	//walls
 
@@ -160,6 +165,11 @@ void ModuleSceneIntro::DrawChainsBoard()
 	Points_Chicorita->body->SetActive(true);
 	Points_Cynda = App->physics->CreateRectangleSensor(222, 370, 5, 0);
 	Points_Cynda->body->SetActive(true);
+	Points_Bumper1 = App->physics->CreateRectangleSensor(222, 370, 5, 15);
+	Points_Bumper1->body->SetActive(true);
+	Points_Bumper2 = App->physics->CreateRectangleSensor(222, 370, 5, 0);
+	Points_Bumper2->body->SetActive(true);
+
 	int bumper_rigth[8] = {
 		296, 702,
 		332, 648,
@@ -605,13 +615,8 @@ void ModuleSceneIntro::DrawChainsBoard()
 
 void ModuleSceneIntro::Draw()
 {
-	if (ball.physbody != NULL)
-	{
-		ball.position.x = ball.physbody->body->GetPosition().x;
-		ball.position.y = ball.physbody->body->GetPosition().y;
-		App->renderer->Blit(ball.texture, ball.position.x, ball.position.y, &ball.box, 50.0f, ball.physbody->GetRotation(), ball.physbody->body->GetLocalCenter().x + 11, ball.physbody->body->GetLocalCenter().y + 11);
-
-	}
+	
+	ball.physbody->GetPosition(ball.position.x, ball.position.y);
 
 	//ball.physbody->body->GetPosition(, ball.position.y);
 
@@ -634,6 +639,8 @@ void ModuleSceneIntro::Draw()
 	App->renderer->Blit(map, 456, 724, &spoink.GetCurrentFrame(), -0.1f);
 	App->renderer->Blit(left_flipper.texture, 165, 750, &left_flipper.box, 50.0f, left_flipper.physbody->GetRotation(), left_flipper.physbody->body->GetLocalCenter().x, left_flipper.physbody->body->GetLocalCenter().y);
 	App->renderer->Blit(right_flipper.texture, 295, 744, &right_flipper.box, 50.0f, (r_flipper_joint->GetJointAngle()*RADTODEG) + 180, right_flipper.physbody->body->GetWorldCenter().x, right_flipper.physbody->body->GetWorldCenter().y);
+
+	App->renderer->Blit(ball.texture, ball.position.x, ball.position.y, &ball.box, 50.0f, ball.physbody->GetRotation(), ball.physbody->body->GetLocalCenter().x + 11, ball.physbody->body->GetLocalCenter().y + 11);
 
 }
 
@@ -659,6 +666,10 @@ void ModuleSceneIntro::OnCollision(PhysBody* bodyA, PhysBody* bodyB) {
 	if (bodyB == Points_Chicorita || bodyB == Points_Cynda)
 	{
 		score += 500;
+	}
+	if (bodyB == Points_Bumper1 || bodyB == Points_Bumper2)
+	{
+		score += 2000;
 	}
 }
 void ModuleSceneIntro:: TopOrUnder()

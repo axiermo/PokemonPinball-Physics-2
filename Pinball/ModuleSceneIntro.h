@@ -66,6 +66,8 @@ public:
 	PhysBody* bumperleft;
 	PhysBody* Points_Chicorita;
 	PhysBody* Points_Cynda;
+	PhysBody* Points_Bumper1;
+	PhysBody* Points_Bumper2;
 
 	SDL_Texture* map = nullptr;
 
