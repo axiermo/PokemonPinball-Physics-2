@@ -35,7 +35,11 @@ bool ModuleSceneIntro::Start()
 	SDL_Texture* LFlipper = App->textures->Load("sprites/left_flipper.png");
 	SDL_Texture* RFlipper = App->textures->Load("sprites/right_flipper.png");
 
+	Squared_Pokemon = App->textures->Load("sprites/Squared_Pokemon.png");
+
 	top = false;
+	catch_on = false;
+	ready = 6;
 	ball.physbody = App->physics->CreateCircle(475, 600, 11, b2BodyType::b2_dynamicBody);
 	ball.position = { 475,600 };
 	ball.physbody->listener = this;
@@ -102,6 +106,11 @@ bool ModuleSceneIntro::Start()
 	spoink.PushBack({ 23,1609,40,100 });
 	spoink.PushBack({ 66,1609,40,100 });
 	spoink.speed = 0.025f;
+
+	voltorb.PushBack({ 379,534,26,26 });
+	voltorb.PushBack({ 407,534,26,26 });
+	voltorb.PushBack({ 435,534,26,26 });
+	voltorb.speed = 0.02f;
 	
 	App->scene_intro->DrawChainsBoard();
 	
@@ -146,6 +155,10 @@ update_status ModuleSceneIntro::Update(){
 		ball.position = { 475,600 };
 		ball.physbody->listener = this;
 	}
+	if (catch_on && ready > 5)
+	{
+		//catch code
+	}
 
 	// Draw ----------
 		Draw();
@@ -176,6 +189,8 @@ void ModuleSceneIntro::DrawChainsBoard()
 	RigthEntrance->body->SetActive(true);
 	LeftEntrance = App->physics->CreateRectangleSensor(90, 398, 25, 0);
 	LeftEntrance->body->SetActive(true);
+	CatchMode = App->physics->CreateRectangleSensor(380, 420, 20, 0);
+	CatchMode->body->SetActive(true);
 	//walls
 
 	Points_Chicorita = App->physics->CreateRectangleSensor(150, 535, 5, 0);
@@ -673,8 +688,7 @@ void ModuleSceneIntro::Draw()
 
 
 	App->renderer->Blit(background.texture, background.position.x, background.position.y, &background.box);
-	App->renderer->Blit(overlay2->texture, overlay2->position.x, overlay2->position.y, &overlay2->box);
-	App->renderer->Blit(overlay->texture, overlay->position.x, overlay->position.y, &overlay->box);
+	
 	App->renderer->Blit(cyndaquilcave->texture, cyndaquilcave->position.x, cyndaquilcave->position.y, &cyndaquilcave->box);
 			  
 	App->renderer->Blit(egg->texture, egg->position.x, egg->position.y, &egg->box);
@@ -686,14 +700,42 @@ void ModuleSceneIntro::Draw()
 	App->renderer->Blit(map, 134, 272, &cyndaquil.GetCurrentFrame(), -0.1f);
 	App->renderer->Blit(map, 105, 421, &chikorita.GetCurrentFrame(), -0.1f);
 	App->renderer->Blit(map, 375, 537, &makuhita.GetCurrentFrame(), -0.1f);
-	App->renderer->Blit(map, 353, 332, &sharpedo.GetCurrentFrame(), -0.1f);
+	App->renderer->Blit(overlay->texture, overlay->position.x, overlay->position.y, &overlay->box);
 	App->renderer->Blit(map, 456, 724, &spoink.GetCurrentFrame(), -0.1f);
 	App->renderer->Blit(left_flipper.texture, 165, 750, &left_flipper.box, 50.0f, left_flipper.physbody->GetRotation(), left_flipper.physbody->body->GetLocalCenter().x, left_flipper.physbody->body->GetLocalCenter().y);
 	App->renderer->Blit(right_flipper.texture, 295, 744, &right_flipper.box, 50.0f, (r_flipper_joint->GetJointAngle()*RADTODEG) + 180, right_flipper.physbody->body->GetWorldCenter().x, right_flipper.physbody->body->GetWorldCenter().y);
 	App->renderer->Blit(map, 234, 379, &bumpers.GetCurrentFrame(), -0.1f);
 	App->renderer->Blit(map, 300, 486, &capture.GetCurrentFrame(), -0.1f);
+	if (catch_on)
+	{
+		if (ready <= 3)
+		{
+			SDL_Rect rect1 = { 279,531,48,32 };
+			App->renderer->Blit(Squared_Pokemon, 210, 550, &rect1, -0.0f);
+		}
+		else if (ready <= 5)
+		{
+			SDL_Rect rect1 = { 329,531,48,32 };
+			App->renderer->Blit(Squared_Pokemon, 210, 550, &rect1, -0.0f);
+		}
+		else
+		{
+			App->renderer->Blit(Squared_Pokemon, 210, 550, &voltorb.GetCurrentFrame(), -0.1f);
+		}
+	}
+
+	if (top) 
+	{
+		App->renderer->Blit(ball.texture, ball.position.x, ball.position.y, &ball.box, 50.0f, ball.physbody->GetRotation(), ball.physbody->body->GetLocalCenter().x + 11, ball.physbody->body->GetLocalCenter().y + 11);
+		App->renderer->Blit(overlay2->texture, overlay2->position.x, overlay2->position.y, &overlay2->box);
+	}
+	else
+	{
+		App->renderer->Blit(overlay2->texture, overlay2->position.x, overlay2->position.y, &overlay2->box);
+		App->renderer->Blit(ball.texture, ball.position.x, ball.position.y, &ball.box, 50.0f, ball.physbody->GetRotation(), ball.physbody->body->GetLocalCenter().x + 11, ball.physbody->body->GetLocalCenter().y + 11);
+	}
+	App->renderer->Blit(map, 353, 332, &sharpedo.GetCurrentFrame(), -0.1f);
 	App->renderer->Blit(map, 175, 80, &nuzleaf.GetCurrentFrame(), -0.1f);
-	App->renderer->Blit(ball.texture, ball.position.x, ball.position.y, &ball.box, 50.0f, ball.physbody->GetRotation(), ball.physbody->body->GetLocalCenter().x + 11, ball.physbody->body->GetLocalCenter().y + 11);
 
 }
 
@@ -726,10 +768,16 @@ void ModuleSceneIntro::OnCollision(PhysBody* bodyA, PhysBody* bodyB) {
 	{
 		score += 2000;
 	}
-	if (bodyB == OverSpoink) {
+	if (bodyB == CatchMode && catch_on == false)
+	{
+		catch_on = true;
+	}
+	if (bodyB == OverSpoink) 
+	{
 		Close_begining->body->SetActive(false);
 	}
-	if ((bodyB == Begining)&&(Close_begining->body->IsActive()==false)) {
+	if ((bodyB == Begining)&&(Close_begining->body->IsActive()==false))
+	{
 		Close_begining->body->SetActive(true);
 	}
 }
@@ -739,6 +787,7 @@ void ModuleSceneIntro:: TopOrUnder()
 	{
 		//p2List_item<PhysBody*>* items = limits_background.getFirst();
 		TunelExterior->body->SetActive(true);
+		TunelInterior->body->SetActive(true);
 		//if(background.physbody !=nullptr)
 		background.physbody->body->SetActive(false);
 		SharkWalls->body->SetActive(false);
@@ -746,6 +795,7 @@ void ModuleSceneIntro:: TopOrUnder()
 	else
 	{
 		TunelExterior->body->SetActive(false);
+		TunelInterior->body->SetActive(false);
 		//if (background.physbody != nullptr)
 		background.physbody->body->SetActive(true);
 		SharkWalls->body->SetActive(true);

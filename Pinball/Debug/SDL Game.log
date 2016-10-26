@@ -1,11 +1,12 @@
 ﻿  ModuleSceneIntro.cpp
-c:\users\asier\documents\github\test\pinball\modulesceneintro.cpp(73): warning C4305: '=': truncation from 'double' to 'float'
-c:\users\asier\documents\github\test\pinball\modulesceneintro.cpp(77): warning C4305: '=': truncation from 'double' to 'float'
-c:\users\asier\documents\github\test\pinball\modulesceneintro.cpp(81): warning C4305: '=': truncation from 'double' to 'float'
-c:\users\asier\documents\github\test\pinball\modulesceneintro.cpp(136): warning C4305: 'argument': truncation from 'double' to 'float32'
-c:\users\asier\documents\github\test\pinball\modulesceneintro.cpp(691): warning C4244: 'argument': conversion from 'const float32' to 'int', possible loss of data
-c:\users\asier\documents\github\test\pinball\modulesceneintro.cpp(692): warning C4244: 'argument': conversion from 'const float32' to 'int', possible loss of data
-c:\users\asier\documents\github\test\pinball\modulesceneintro.cpp(696): warning C4244: 'argument': conversion from 'float32' to 'int', possible loss of data
-c:\program files (x86)\microsoft visual studio 14.0\vc\include\limits(210): warning C4577: 'noexcept' used with no exception handling mode specified; termination on exception is not guaranteed. Specify /EHsc
-  SDL Game.vcxproj -> C:\Users\asier\Documents\GitHub\test\Pinball\Debug\2D Physics - class 4.exe
-  SDL Game.vcxproj -> C:\Users\asier\Documents\GitHub\test\Pinball\Debug\2D Physics - class 4.pdb (Full PDB)
+c:\users\usuario\documents\github\pokemonpinball-physics-2\pinball\modulesceneintro.cpp(77): warning C4305: '=': truncation from 'double' to 'float'
+c:\users\usuario\documents\github\pokemonpinball-physics-2\pinball\modulesceneintro.cpp(81): warning C4305: '=': truncation from 'double' to 'float'
+c:\users\usuario\documents\github\pokemonpinball-physics-2\pinball\modulesceneintro.cpp(85): warning C4305: '=': truncation from 'double' to 'float'
+c:\users\usuario\documents\github\pokemonpinball-physics-2\pinball\modulesceneintro.cpp(145): warning C4305: 'argument': truncation from 'double' to 'float32'
+c:\users\usuario\documents\github\pokemonpinball-physics-2\pinball\modulesceneintro.cpp(701): warning C4244: 'argument': conversion from 'const float32' to 'int', possible loss of data
+c:\users\usuario\documents\github\pokemonpinball-physics-2\pinball\modulesceneintro.cpp(702): warning C4244: 'argument': conversion from 'const float32' to 'int', possible loss of data
+c:\users\usuario\documents\github\pokemonpinball-physics-2\pinball\modulesceneintro.cpp(725): warning C4244: 'argument': conversion from 'float32' to 'int', possible loss of data
+c:\users\usuario\documents\github\pokemonpinball-physics-2\pinball\modulesceneintro.cpp(731): warning C4244: 'argument': conversion from 'float32' to 'int', possible loss of data
+c:\users\usuario\desktop\cheats\vc\include\limits(210): warning C4577: 'noexcept' used with no exception handling mode specified; termination on exception is not guaranteed. Specify /EHsc
+  SDL Game.vcxproj -> C:\Users\Usuario\Documents\GitHub\PokemonPinball-Physics-2\Pinball\Debug\2D Physics - class 4.exe
+  SDL Game.vcxproj -> C:\Users\Usuario\Documents\GitHub\PokemonPinball-Physics-2\Pinball\Debug\2D Physics - class 4.pdb (Full PDB)

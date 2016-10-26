@@ -60,6 +60,7 @@ public:
 	PhysBody* Begining;
 	PhysBody* OverSpoink;
 	PhysBody* Close_begining;
+	PhysBody* CatchMode;
 
 	PhysBody* SharkWalls;
 	PhysBody* TunelExterior;
@@ -72,6 +73,7 @@ public:
 	PhysBody* Points_Bumper2;
 
 	SDL_Texture* map = nullptr;
+	SDL_Texture* Squared_Pokemon = nullptr;
 
 	element left_flipper;
 	element right_flipper;
@@ -90,6 +92,7 @@ public:
 	Animation nuzleaf;
 	Animation capture;
 	Animation bumpers;
+	Animation voltorb;
 	element* egg;
 	
 	element* overlay;
@@ -101,4 +104,6 @@ public:
 	iPoint ball_point;
 	bool top;
 	uint score;
+	bool catch_on;
+	uint ready;
 };
