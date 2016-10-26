@@ -11,7 +11,7 @@
 
 
 #define GRAVITY_X 0.0f
-#define GRAVITY_Y -0.03
+#define GRAVITY_Y -0.04
 
 #ifdef _DEBUG
 #pragma comment( lib, "Box2D/libx86/Debug/Box2D.lib" )
@@ -51,13 +51,17 @@ bool j1Physics::Start()
 	world = new b2World(b2Vec2(GRAVITY_X, -GRAVITY_Y));
 	world->SetContactListener(this);
 
+	b2BodyDef bd;
+	ground = world->CreateBody(&bd);
+
+
 	return true;
 }
 
 // Called each loop iteration
 bool j1Physics::PreUpdate()
 {
-	world->Step(1.0f / 60.0f, 6, 2);
+	world->Step(1.0f / 60.0f, 128, 128);
 
 	for (b2Contact* c = world->GetContactList(); c; c = c->GetNext())
 	{
@@ -163,6 +167,46 @@ bool j1Physics::PostUpdate()
 		}
 	}
 
+	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN && selected != nullptr)
+	{
+		int mouse_x, mouse_y;
+		App->input->GetMousePosition(mouse_x, mouse_y);
+		mouse_x -= App->render->camera.x;
+		mouse_y -= App->render->camera.y;
+		b2Vec2 mouse(PIXEL_TO_METERS(mouse_x), PIXEL_TO_METERS(mouse_y));
+
+		b2MouseJointDef def;
+		def.bodyA = ground;
+		def.bodyB = selected;
+		def.target = mouse;
+		def.dampingRatio = 0.5f;
+		def.frequencyHz = 2.0f;
+		def.maxForce = 100.0f * selected->GetMass();
+
+		mouse_joint = (b2MouseJoint*)world->CreateJoint(&def);
+
+	}
+
+	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT && selected != nullptr)
+	{
+		int mouse_x, mouse_y;
+		App->input->GetMousePosition(mouse_x, mouse_y);
+		mouse_x -= App->render->camera.x;
+		mouse_y -= App->render->camera.y;
+		b2Vec2 mouse(PIXEL_TO_METERS(mouse_x), PIXEL_TO_METERS(mouse_y));
+		b2Vec2 mouse_pix(mouse_x, mouse_y);
+
+		mouse_joint->SetTarget(mouse);
+		App->render->DrawLine(mouse_pix.x, mouse_pix.y, METERS_TO_PIXELS(selected->GetPosition().x), METERS_TO_PIXELS(selected->GetPosition().y), 255, 0, 0, 255);
+	}
+
+	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_UP && selected != nullptr)
+	{
+		world->DestroyJoint(mouse_joint);
+		mouse_joint = nullptr;
+		selected = nullptr;
+	}
+
 	return ret;
 }
 
@@ -177,7 +221,7 @@ bool j1Physics::CleanUp()
 	return true;
 }
 
-PhysBody * j1Physics::CreateCircle(int x, int y, int radius,b2BodyType bodytype,uint mask, uint category)
+PhysBody * j1Physics::CreateCircle(int x, int y, int radius,b2BodyType bodytype, float restitution,uint mask, uint category)
 {
 	b2BodyDef body;
 	body.type = bodytype;
@@ -190,7 +234,7 @@ PhysBody * j1Physics::CreateCircle(int x, int y, int radius,b2BodyType bodytype,
 	b2FixtureDef fixture;
 	fixture.shape = &shape;
 	fixture.density = 0.5f;
-	fixture.restitution = 0.33f;
+	fixture.restitution = restitution;
 
 	b->CreateFixture(&fixture);
 
@@ -202,6 +246,7 @@ PhysBody * j1Physics::CreateCircle(int x, int y, int radius,b2BodyType bodytype,
 
 	return pbody;
 }
+
 
 PhysBody* j1Physics::CreateRectangle(int x, int y, int width, int height, b2BodyType bodytype, uint mask, uint category)
 {
@@ -282,6 +327,7 @@ PhysBody * j1Physics::CreateChain(int x, int y, int* points, int size, b2BodyTyp
 	fixture.shape = &shape;
 	fixture.filter.maskBits = mask;
 	fixture.filter.categoryBits = category;
+	fixture.friction = 0.2;
 	if (bodytype == b2_kinematicBody)
 		fixture.restitution = 0.8;
 

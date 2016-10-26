@@ -92,7 +92,7 @@ bool j1Scene::Update(float dt)
 		if ((App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) || (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_REPEAT))
 			App->map->ball_launcher_joint->SetMotorSpeed(0.1);
 		else 
-			App->map->ball_launcher_joint->SetMotorSpeed(-4.0);
+			App->map->ball_launcher_joint->SetMotorSpeed(-6.0);
 	
 	
 		// Create a new ball

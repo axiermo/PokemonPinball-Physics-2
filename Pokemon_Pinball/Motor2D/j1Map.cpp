@@ -40,18 +40,25 @@ bool j1Map::Start()
 	cyndaquilcave = new element(map, 375, 1736, 82, 72, 135, 220);
 	background = new element(map,1059 , 32, 500, 829, 0, 1);
 	egg = new element(map, 655, 2837, 32, 38, 158, 194);
+	
+	//-------BUMPERS------
+	chinchou_bumper_1 = new element();
+	
+	chinchou_bumper_1->animation.PushBack({ 349,1544,51,41 });
+	chinchou_bumper_1->animation.PushBack({ 402,1540,47,45 });
+	chinchou_bumper_1->animation.speed = 0.0005;
 
-	chinchou1.PushBack({ 349,1544,51,41 });
-	chinchou1.PushBack({ 402,1540,47,45 });
-	chinchou1.speed = 0.0005;
+	chinchou_bumper_2 = new element();
 
-	chinchou2.PushBack({ 349,1544,51,41 });
-	chinchou2.PushBack({ 402,1540,47,45 });
-	chinchou2.speed = 0.0006;
+	chinchou_bumper_2->animation.PushBack({ 349,1544,51,41 });
+	chinchou_bumper_2->animation.PushBack({ 402,1540,47,45 });
+	chinchou_bumper_2->animation.speed = 0.0006;
 
-	chinchou3.PushBack({ 349,1544,51,41 });
-	chinchou3.PushBack({ 402,1540,47,45 });
-	chinchou3.speed = 0.0004;
+	chinchou_bumper_3 = new element();
+
+	chinchou_bumper_3->animation.PushBack({ 349,1544,51,41 });
+	chinchou_bumper_3->animation.PushBack({ 402,1540,47,45 });
+	chinchou_bumper_3->animation.speed = 0.0004;
 
 	cyndaquil.PushBack({ 37,1731,66,76 });
 	cyndaquil.PushBack({ 103,1731,66,76 });
@@ -75,11 +82,7 @@ bool j1Map::Start()
 	spoink.PushBack({ 23,1609,40,100 });
 	spoink.PushBack({ 66,1609,40,100 });
 	spoink.speed = 0.0025f;
-	//left_flipper = new element(map,)
 
-	//name of the variable = App->tex->Load()
-
-	//here we will load every sprite
 
 	return true;
 }
@@ -88,7 +91,8 @@ void j1Map::DrawChainsBoard()
 {
 	//ball
 	//ball = new element(App->tex->Load("maps/PokeBall_std.png"), 0, 0, 36, 36, ball_point.x, ball_point.y);
-	ball.physbody = App->physics->CreateCircle(ball_point.x, ball_point.y, 11, b2BodyType::b2_dynamicBody,0x0002,0x0001);
+	ball.physbody = App->physics->CreateCircle(ball_point.x, ball_point.y, 11, b2BodyType::b2_dynamicBody,0.33,0x0002,0x0001);
+	ball.physbody->listener = App->physics;
 	ball.position = { ball_point.x,ball_point.y };
 	//the 0x0000 things: 0x0001 es el background, el 2 es la pilota i el 3 son esl flippers i els launchers,
 	//el primer terme es el que identifica el objecte que crearà i lo segon es amb quin tipus de bodys colisiona
@@ -382,7 +386,22 @@ void j1Map::DrawChainsBoard()
 		123, 954
 	};
 
-	//flippers
+	//--------BUMPERS---------------
+
+	chinchou_bumper_1->physbody = App->physics->CreateCircle(250, 261,20, b2BodyType::b2_kinematicBody,0.8 , 0x0003, 0x0001);
+	
+	chinchou_bumper_2->physbody = App->physics->CreateCircle(316, 267,20, b2BodyType::b2_kinematicBody,0.8 ,0x0003, 0x0001);
+	
+	chinchou_bumper_3->physbody = App->physics->CreateCircle(283, 325,20, b2BodyType::b2_kinematicBody,0.8 ,0x0003, 0x0001);	
+	/*big_bumper1->pb = App->physics->CreateCircle(370, 576, 40, 0.7f, 0x0003, 0x0002); 
+	big_bumper1->pb->body->SetType(b2_kinematicBody);
+	big_bumper1->pb->coll_name = collider_names::big_bumper_1;
+	big_bumper2->pb = App->physics->CreateCircle(527, 440, 40, 0.7f, 0x0003, 0x0002); big_bumper2->pb->body->SetType(b2_kinematicBody);
+	big_
+*/
+
+
+	//-------FLIPPERS & LAUNCHERS--------
 	int left_flipper[22] = {
 		169, 783,
 		161, 780,
@@ -406,7 +425,7 @@ void j1Map::DrawChainsBoard()
 
 
 	iPoint left_flipper_pos = {170,763};
-	PhysBody* Ball_l_A = App->physics->CreateCircle(left_flipper_pos.x, left_flipper_pos.y, 10, b2BodyType::b2_staticBody,0x0000,0x0000);
+	PhysBody* Ball_l_A = App->physics->CreateCircle(left_flipper_pos.x, left_flipper_pos.y, 10, b2BodyType::b2_staticBody,0.0,0x0000,0x0000);
 	PhysBody* Chain_l_B = App->physics->CreateRectangle(left_flipper_pos.x, left_flipper_pos.y, 58, 15, b2BodyType::b2_dynamicBody,0x0001,0x0002);
 
 	l_flipper_joint = App->physics->CreateRevoluteJoint(Ball_l_A, Chain_l_B, -24.0f, 0.0f, 30,-15, 300, 0);
@@ -414,7 +433,7 @@ void j1Map::DrawChainsBoard()
 	//l_flipper_joint = App->physics->CreateRevoluteJoint(10, left_flipper, 22, 169, 765, 10, 10, 200, 150, 10, -90);
 	
 	iPoint right_flipper_pos = {305,763};
-	PhysBody* Ball_r_A = App->physics->CreateCircle(right_flipper_pos.x, right_flipper_pos.y,10,b2BodyType::b2_staticBody, 0x0000, 0x0000);
+	PhysBody* Ball_r_A = App->physics->CreateCircle(right_flipper_pos.x, right_flipper_pos.y,10,b2BodyType::b2_staticBody,0.0, 0x0000, 0x0000);
 	PhysBody* Chain_r_B = App->physics->CreateRectangle(right_flipper_pos.x , right_flipper_pos.y, 58, 15, b2BodyType::b2_dynamicBody, 0x0001, 0x0002);
 	//PhysBody* Chain_r_B = App->physics->CreateChain(right_flipper_pos.x, right_flipper_pos.y, right_flipper, 10, b2BodyType::b2_dynamicBody);
 
@@ -434,7 +453,7 @@ void j1Map::Draw()
 	ball.physbody->GetPosition(ball.position.x, ball.position.y);
 
 	
-	//App->render->Blit(background->texture, background->position.x, background->position.y, &background->box);
+	App->render->Blit(background->texture, background->position.x, background->position.y, &background->box);
 	App->render->Blit(overlay2->texture, overlay2->position.x, overlay2->position.y, &overlay2->box);
 	App->render->Blit(overlay->texture, overlay->position.x, overlay->position.y, &overlay->box);
 	App->render->Blit(cyndaquilcave->texture, cyndaquilcave->position.x, cyndaquilcave->position.y, &cyndaquilcave->box);
@@ -450,7 +469,7 @@ void j1Map::Draw()
 	App->render->Blit(map, 375, 537, &makuhita.GetCurrentFrame(), -0.1f);
 	App->render->Blit(map, 353, 332, &sharpedo.GetCurrentFrame(), -0.1f);
 	App->render->Blit(map, 456, 724, &spoink.GetCurrentFrame(), -0.1f);
-	App->render->Blit(ball.texture, ball.position.x, ball.position.y, &ball.box, 50000000000000.0f, ball.physbody->GetRotation(), ball.physbody->body->GetLocalCenter().x+11, ball.physbody->body->GetLocalCenter().y+11);
+	App->render->Blit(ball.texture, ball.position.x, ball.position.y, &ball.box, 5.0f, ball.physbody->GetRotation(), ball.physbody->body->GetLocalCenter().x+11, ball.physbody->body->GetLocalCenter().y+11);
 
 }
 
@@ -465,6 +484,7 @@ bool j1Map::CleanUp()
 void j1Map::NewBall()
 {
 	ball.position = { 475,600 };
-	ball.physbody = ball.physbody = App->physics->CreateCircle(ball.position.x, ball.position.y, 11, b2BodyType::b2_dynamicBody,0x0002,0x0001);
+	ball.physbody  = App->physics->CreateCircle(ball.position.x, ball.position.y, 11, b2BodyType::b2_dynamicBody,0.2,0x0002,0x0001);
+	ball.physbody->listener = App->physics;
 }
 

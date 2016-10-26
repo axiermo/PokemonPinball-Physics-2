@@ -38,6 +38,7 @@ public:
 		PhysBody* physbody = nullptr;
 		SDL_Rect box;
 		iPoint position;
+		Animation animation;
 	public:
 		element() {}
 		//call a constructure	
@@ -94,6 +95,9 @@ public:
 	element* cyndaquilcave;
 	element* triangle_left;
 	element* triangle_right;
+	element* chinchou_bumper_1;
+	element* chinchou_bumper_2;
+	element* chinchou_bumper_3;
 
 	iPoint ball_point;
 };

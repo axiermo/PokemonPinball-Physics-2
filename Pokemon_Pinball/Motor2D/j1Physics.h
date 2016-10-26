@@ -59,7 +59,7 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
-	PhysBody* CreateCircle(int x, int y, int radius, b2BodyType bodytype,uint mask,uint category);
+	PhysBody* CreateCircle(int x, int y, int radius, b2BodyType bodytype,float restitution,uint mask,uint category);
 	PhysBody* CreateRectangle(int x, int y, int width, int height, b2BodyType bodytype,uint mask, uint category);
 	PhysBody* CreateRectangleSensor(int x, int y, int width, int height, uint mask, uint category);
 	PhysBody* CreateChain(int x, int y, int* points, int size, b2BodyType bodytype, uint mask, uint category);
@@ -67,6 +67,10 @@ public:
 	b2PrismaticJoint* CreatePrismaticJoint(PhysBody* bodyA, PhysBody* bodyB, b2Vec2 anchorA, b2Vec2 anchorB, float low_trams, float upp_trans, float max_motor_force, float speed);
 	b2RevoluteJoint* CreateRevoluteJoint(PhysBody* bodyA, PhysBody* bodyB,float anchorx, float anchory, int upper_angle, int lower_angle, int max_torque, int speed);
 
+	void SetGround(b2Body* body)
+	{
+		ground = body;
+	}
 
 	// b2ContactListener ---
 	void BeginContact(b2Contact* contact);
@@ -74,10 +78,11 @@ public:
 private:
 	
 	bool debug;
-	b2World* world;
 	b2Body* ground;
+	b2Body* selected = nullptr;
 	b2MouseJoint* mouse_joint;
-
+public:
+	b2World* world;
 };
 #endif // __j1PHYSICS_H__
 
