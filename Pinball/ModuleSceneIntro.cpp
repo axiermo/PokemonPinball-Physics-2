@@ -21,7 +21,10 @@ bool ModuleSceneIntro::Start()
 
 	
 	App->audio->PlayMusic("music/SoundTrack.ogg");
-	
+	App->audio->LoadFx("FX/ballhit.wav");
+	App->audio->LoadFx("FX/bumper.wav");
+	App->audio->LoadFx("FX/Ballpasscoin.wav");
+
 	
 	LOG("Loading Intro assets");
 
@@ -39,7 +42,16 @@ bool ModuleSceneIntro::Start()
 	ball.texture = pokeball;
 	ball.box = { 0,0,24,24 };
 
-	
+	capture.PushBack({ 780,580,60,64 });
+	capture.PushBack({ 0,0,0,0 });
+	capture.speed = 0.1f;
+	bumpers.PushBack({ 612,578,62,66 });
+	bumpers.PushBack({ 0,0,0,0 });
+	bumpers.speed = 0.1f;
+	nuzleaf.PushBack({ 889,1646,80,40 });
+	nuzleaf.PushBack({ 972,1646,79,44 });
+	nuzleaf.speed = 0.12f;
+
 	overlay2 = new element(map, 554, 32, 500, 450, 20, 10);
 	overlay = new element(map, 24, 32, 500, 500, 0, 10);
 
@@ -155,6 +167,11 @@ void ModuleSceneIntro::DrawChainsBoard()
 	//ball = new element(App->tex->Load("maps/PokeBall_std.png"), 0, 0, 36, 36, ball_point.x, ball_point.y);
 	
 	//sensors
+	/*OverSpoink = App->physics->CreateRectangleSensor(470,492, 20,0);
+	OverSpoink->body->SetActive(true);*/
+
+	Begining = App->physics->CreateRectangleSensor(390,154, 0, 20);
+	Begining->body->SetActive(true);
 	RigthEntrance = App->physics->CreateRectangleSensor(345, 398, 18, 0);
 	RigthEntrance->body->SetActive(true);
 	LeftEntrance = App->physics->CreateRectangleSensor(90, 398, 25, 0);
@@ -187,6 +204,40 @@ void ModuleSceneIntro::DrawChainsBoard()
 	};
 	bumperleft = App->physics->CreateChain(0, 0, bumper_left, 8, b2BodyType::b2_staticBody);
 
+	// Pivot 0, 0
+	int abovechinchous[12] = {
+		242, 175,
+		243, 203,
+		248, 208,
+		254, 203,
+		254, 175,
+		247, 169
+	};
+
+	PhysBody* above = App->physics->CreateChain(0, 0, abovechinchous, 12, b2BodyType::b2_staticBody);
+	// Pivot 0, 0
+	int AboveChinchous2[12] = {
+		290, 176,
+		284, 180,
+		283, 206,
+		288, 211,
+		296, 206,
+		297, 180
+	};
+	PhysBody* above2 = App->physics->CreateChain(0, 0, AboveChinchous2, 12, b2BodyType::b2_staticBody);
+	// Pivot 0, 0
+	int CloseBegining[16] = {
+		363, 182,
+		390, 208,
+		401, 228,
+		416, 256,
+		426, 283,
+		430, 271,
+		408, 210,
+		380, 188
+	};
+	Close_begining = App->physics->CreateChain(0, 0, CloseBegining, 16, b2BodyType::b2_staticBody);
+	Close_begining->body->SetActive(false);
 	
 	int Tunel_Interior[84] = {
 		103, 388,
@@ -232,7 +283,7 @@ void ModuleSceneIntro::DrawChainsBoard()
 		92, 362,
 		102, 373
 	};
-	PhysBody* TunelInterior = App->physics->CreateChain(0, 0, Tunel_Interior, 84, b2BodyType::b2_staticBody);
+	TunelInterior = App->physics->CreateChain(0, 0, Tunel_Interior, 84, b2BodyType::b2_staticBody);
 	TunelInterior->body->SetActive(false);
 	int tunel_exterior[118] = {
 		114, 436,
@@ -639,7 +690,9 @@ void ModuleSceneIntro::Draw()
 	App->renderer->Blit(map, 456, 724, &spoink.GetCurrentFrame(), -0.1f);
 	App->renderer->Blit(left_flipper.texture, 165, 750, &left_flipper.box, 50.0f, left_flipper.physbody->GetRotation(), left_flipper.physbody->body->GetLocalCenter().x, left_flipper.physbody->body->GetLocalCenter().y);
 	App->renderer->Blit(right_flipper.texture, 295, 744, &right_flipper.box, 50.0f, (r_flipper_joint->GetJointAngle()*RADTODEG) + 180, right_flipper.physbody->body->GetWorldCenter().x, right_flipper.physbody->body->GetWorldCenter().y);
-
+	App->renderer->Blit(map, 234, 379, &bumpers.GetCurrentFrame(), -0.1f);
+	App->renderer->Blit(map, 300, 486, &capture.GetCurrentFrame(), -0.1f);
+	App->renderer->Blit(map, 175, 80, &nuzleaf.GetCurrentFrame(), -0.1f);
 	App->renderer->Blit(ball.texture, ball.position.x, ball.position.y, &ball.box, 50.0f, ball.physbody->GetRotation(), ball.physbody->body->GetLocalCenter().x + 11, ball.physbody->body->GetLocalCenter().y + 11);
 
 }
@@ -656,12 +709,14 @@ void ModuleSceneIntro::OnCollision(PhysBody* bodyA, PhysBody* bodyB) {
 		top = !top;
 	}
 	if (bodyB == bumperright) {
-
+		
 		bodyA->body->SetLinearVelocity(b2Vec2(-8, -8));
+		App->audio->PlayFx(1, 0);
 	}
 	if (bodyB == bumperleft) {
-
+		
 		bodyA->body->SetLinearVelocity(b2Vec2(8, -8));
+		App->audio->PlayFx(1, 0);
 	}
 	if (bodyB == Points_Chicorita || bodyB == Points_Cynda)
 	{
@@ -670,6 +725,12 @@ void ModuleSceneIntro::OnCollision(PhysBody* bodyA, PhysBody* bodyB) {
 	if (bodyB == Points_Bumper1 || bodyB == Points_Bumper2)
 	{
 		score += 2000;
+	}
+	if (bodyB == OverSpoink) {
+		Close_begining->body->SetActive(false);
+	}
+	if ((bodyB == Begining)&&(Close_begining->body->IsActive()==false)) {
+		Close_begining->body->SetActive(true);
 	}
 }
 void ModuleSceneIntro:: TopOrUnder()

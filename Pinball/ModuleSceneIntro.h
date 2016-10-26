@@ -57,7 +57,9 @@ public:
 
 	PhysBody* RigthEntrance;
 	PhysBody* LeftEntrance;
-	
+	PhysBody* Begining;
+	PhysBody* OverSpoink;
+	PhysBody* Close_begining;
 
 	PhysBody* SharkWalls;
 	PhysBody* TunelExterior;
@@ -85,7 +87,9 @@ public:
 	Animation chinchou1;
 	Animation chinchou2;
 	Animation chinchou3;
-
+	Animation nuzleaf;
+	Animation capture;
+	Animation bumpers;
 	element* egg;
 	
 	element* overlay;
