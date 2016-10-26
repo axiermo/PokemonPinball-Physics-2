@@ -78,13 +78,13 @@ bool j1Scene::Update(float dt)
 		// GAMEPLAY INPUTS
 		// Left flippers
 		if ((App->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN) || (App->input->GetKey(SDL_SCANCODE_Z) == KEY_REPEAT))
-			App->map->l_flipper_joint->SetMotorSpeed(-3);
+			App->map->l_flipper_joint->SetMotorSpeed(-1.2);
 		else 
 			App->map->l_flipper_joint->SetMotorSpeed(0.8);
 
 		//// Right flippers
 		if ((App->input->GetKey(SDL_SCANCODE_M) == KEY_DOWN) || (App->input->GetKey(SDL_SCANCODE_M) == KEY_REPEAT))
-			App->map->r_flipper_joint->SetMotorSpeed(3);
+			App->map->r_flipper_joint->SetMotorSpeed(1.2);
 		else 
 			App->map->r_flipper_joint->SetMotorSpeed(-0.8);
 			
@@ -92,7 +92,7 @@ bool j1Scene::Update(float dt)
 		if ((App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) || (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_REPEAT))
 			App->map->ball_launcher_joint->SetMotorSpeed(0.1);
 		else 
-			App->map->ball_launcher_joint->SetMotorSpeed(-5);
+			App->map->ball_launcher_joint->SetMotorSpeed(-4.0);
 	
 	
 		// Create a new ball
@@ -102,7 +102,6 @@ bool j1Scene::Update(float dt)
 		}
 
 		// Draw ----------
-
 		App->map->Draw();
 
 		// ---------------

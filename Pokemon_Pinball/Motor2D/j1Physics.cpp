@@ -11,7 +11,7 @@
 
 
 #define GRAVITY_X 0.0f
-#define GRAVITY_Y -0.5f
+#define GRAVITY_Y -0.03
 
 #ifdef _DEBUG
 #pragma comment( lib, "Box2D/libx86/Debug/Box2D.lib" )
@@ -282,6 +282,8 @@ PhysBody * j1Physics::CreateChain(int x, int y, int* points, int size, b2BodyTyp
 	fixture.shape = &shape;
 	fixture.filter.maskBits = mask;
 	fixture.filter.categoryBits = category;
+	if (bodytype == b2_kinematicBody)
+		fixture.restitution = 0.8;
 
 	b->CreateFixture(&fixture);
 

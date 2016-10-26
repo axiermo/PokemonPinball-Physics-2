@@ -77,11 +77,16 @@ public:
 	element right_flipper;
 	element ball;
 	element ball_launcher;
+
 	Animation cyndaquil;
 	Animation chikorita;
 	Animation makuhita;
 	Animation sharpedo;
 	Animation spoink;
+	Animation chinchou1;
+	Animation chinchou2;
+	Animation chinchou3;
+
 	element* egg;
 	element* background;
 	element* overlay;
