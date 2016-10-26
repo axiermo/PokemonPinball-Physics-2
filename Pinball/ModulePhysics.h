@@ -35,6 +35,7 @@ class ModulePhysics : public Module, public b2ContactListener // TODO
 {
 public:
 	ModulePhysics(Application* app, bool start_enabled = true);
+	PhysBody * CreateCircleSensor(int x, int y, int radius);
 	~ModulePhysics();
 
 	bool Start();

@@ -34,8 +34,14 @@ bool ModuleSceneIntro::Start()
 	SDL_Texture* pokeball = App->textures->Load("sprites/PokeBall_std.png");
 	SDL_Texture* LFlipper = App->textures->Load("sprites/left_flipper.png");
 	SDL_Texture* RFlipper = App->textures->Load("sprites/right_flipper.png");
+	App->physics->CreateCircle(246, 265, 10, b2BodyType::b2_staticBody);
+	App->physics->CreateCircle(317, 275, 10, b2BodyType::b2_staticBody);
+	App->physics->CreateCircle(283, 331, 10, b2BodyType::b2_staticBody);
 
 	Squared_Pokemon = App->textures->Load("sprites/Squared_Pokemon.png");
+	chinchsensor1 = App->physics->CreateCircleSensor(246, 265, 12);
+	chinchsensor2 = App->physics->CreateCircleSensor(317, 275, 12);
+	chinchsensor3 = App->physics->CreateCircleSensor(283, 331, 10);
 
 	top = false;
 	catch_on = false;
@@ -779,6 +785,10 @@ void ModuleSceneIntro::OnCollision(PhysBody* bodyA, PhysBody* bodyB) {
 	if ((bodyB == Begining)&&(Close_begining->body->IsActive()==false))
 	{
 		Close_begining->body->SetActive(true);
+	}
+	if ((bodyB == chinchsensor1 || bodyB == chinchsensor2 || bodyB == chinchsensor3)) {
+		App->audio->PlayFx(1, 0);
+		bodyA->body->SetLinearVelocity(b2Vec2(4, -2));
 	}
 }
 void ModuleSceneIntro:: TopOrUnder()

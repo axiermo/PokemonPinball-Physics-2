@@ -62,6 +62,17 @@ public:
 	PhysBody* Close_begining;
 	PhysBody* CatchMode;
 
+	PhysBody* coin1;
+	PhysBody* coin2;
+	PhysBody* coin3;
+	PhysBody* coin4;
+	PhysBody* coin5;
+	PhysBody* coin6;
+	PhysBody* coin7;
+	PhysBody* chinchsensor1;
+	PhysBody* chinchsensor2;
+	PhysBody* chinchsensor3;
+
 	PhysBody* SharkWalls;
 	PhysBody* TunelExterior;
 	PhysBody* TunelInterior;
