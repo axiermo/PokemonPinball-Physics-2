@@ -1,0 +1,18 @@
+﻿  ModuleSceneIntro.cpp
+c:\users\paubv1\desktop\aqui\pokemon pinball\pinball\modulesceneintro.cpp(54): warning C4305: '=': truncation from 'double' to 'float'
+c:\users\paubv1\desktop\aqui\pokemon pinball\pinball\modulesceneintro.cpp(58): warning C4305: '=': truncation from 'double' to 'float'
+c:\users\paubv1\desktop\aqui\pokemon pinball\pinball\modulesceneintro.cpp(62): warning C4305: '=': truncation from 'double' to 'float'
+c:\users\paubv1\desktop\aqui\pokemon pinball\pinball\modulesceneintro.cpp(118): warning C4305: 'argument': truncation from 'double' to 'float32'
+c:\users\paubv1\desktop\aqui\pokemon pinball\pinball\modulesceneintro.cpp(610): warning C4244: '=': conversion from 'const float32' to 'int', possible loss of data
+c:\users\paubv1\desktop\aqui\pokemon pinball\pinball\modulesceneintro.cpp(611): warning C4244: '=': conversion from 'const float32' to 'int', possible loss of data
+c:\users\paubv1\desktop\aqui\pokemon pinball\pinball\modulesceneintro.cpp(612): warning C4244: 'argument': conversion from 'float32' to 'int', possible loss of data
+c:\users\paubv1\desktop\aqui\pokemon pinball\pinball\modulesceneintro.cpp(635): warning C4244: 'argument': conversion from 'const float32' to 'int', possible loss of data
+c:\users\paubv1\desktop\aqui\pokemon pinball\pinball\modulesceneintro.cpp(636): warning C4244: 'argument': conversion from 'const float32' to 'int', possible loss of data
+c:\program files (x86)\microsoft visual studio 14.0\vc\include\limits(210): warning C4577: 'noexcept' used with no exception handling mode specified; termination on exception is not guaranteed. Specify /EHsc
+  Generating Code...
+  Compiling...
+  Application.cpp
+c:\program files (x86)\microsoft visual studio 14.0\vc\include\limits(210): warning C4577: 'noexcept' used with no exception handling mode specified; termination on exception is not guaranteed. Specify /EHsc
+  Generating Code...
+  SDL Game.vcxproj -> C:\Users\paubv1\Desktop\AQUI\Pokemon Pinball\Pinball\Debug\2D Physics - class 4.exe
+  SDL Game.vcxproj -> C:\Users\paubv1\Desktop\AQUI\Pokemon Pinball\Pinball\Debug\2D Physics - class 4.pdb (Full PDB)
