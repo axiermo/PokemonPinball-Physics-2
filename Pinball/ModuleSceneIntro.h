@@ -72,6 +72,7 @@ public:
 	PhysBody* chinchsensor1;
 	PhysBody* chinchsensor2;
 	PhysBody* chinchsensor3;
+	PhysBody* catch_circle;
 
 	PhysBody* SharkWalls;
 	PhysBody* TunelExterior;
@@ -86,6 +87,7 @@ public:
 	SDL_Texture* map = nullptr;
 	SDL_Texture* Squared_Pokemon = nullptr;
 
+	bool win;
 	element left_flipper;
 	element right_flipper;
 	element ball;
@@ -117,4 +119,6 @@ public:
 	uint score;
 	bool catch_on;
 	uint ready;
+	bool lose_condition;
+	uint balls_left;
 };

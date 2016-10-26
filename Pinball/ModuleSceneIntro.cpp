@@ -45,7 +45,11 @@ bool ModuleSceneIntro::Start()
 
 	top = false;
 	catch_on = false;
-	ready = 6;
+	ready = 0;
+	lose_condition = false;
+	balls_left = 4;
+	win = false;
+
 	ball.physbody = App->physics->CreateCircle(475, 600, 11, b2BodyType::b2_dynamicBody);
 	ball.position = { 475,600 };
 	ball.physbody->listener = this;
@@ -135,19 +139,19 @@ update_status ModuleSceneIntro::Update(){
 
 	// GAMEPLAY INPUTS
 	// Left flippers
-	if ((App->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN) || (App->input->GetKey(SDL_SCANCODE_Z) == KEY_REPEAT))
+	if ((App->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN) || (App->input->GetKey(SDL_SCANCODE_Z) == KEY_REPEAT) && !lose_condition)
 		l_flipper_joint->SetMotorSpeed(-25);
 	else
 		l_flipper_joint->SetMotorSpeed(25);
 
 	//// Right flippers
-	if ((App->input->GetKey(SDL_SCANCODE_M) == KEY_DOWN) || (App->input->GetKey(SDL_SCANCODE_M) == KEY_REPEAT))
+	if ((App->input->GetKey(SDL_SCANCODE_M) == KEY_DOWN) || (App->input->GetKey(SDL_SCANCODE_M) == KEY_REPEAT) && !lose_condition)
 		r_flipper_joint->SetMotorSpeed(25);
 	else
 		r_flipper_joint->SetMotorSpeed(-25);
 
 	//// Ball Launcher 
-	if ((App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) || (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_REPEAT))
+	if ((App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) || (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_REPEAT) && !lose_condition)
 		ball_launcher_joint->SetMotorSpeed(123.1);
 	else
 		ball_launcher_joint->SetMotorSpeed(-123.0);
@@ -156,14 +160,23 @@ update_status ModuleSceneIntro::Update(){
 	// Create a new ball
 	if ((App->input->GetKey(SDL_SCANCODE_B) == KEY_DOWN))
 	{
-		top = false;
-		ball.physbody = App->physics->CreateCircle(475, 600, 11, b2BodyType::b2_dynamicBody);
-		ball.position = { 475,600 };
-		ball.physbody->listener = this;
+		balls_left--;
+		if (balls_left > 0)
+		{
+			top = false;
+			ball.physbody = App->physics->CreateCircle(475, 600, 11, b2BodyType::b2_dynamicBody);
+			ball.position = { 475,600 };
+			ball.physbody->listener = this;
+		}
+		else
+			lose_condition = true;
+
+		//if(lose_condition)
 	}
 	if (catch_on && ready > 5)
 	{
-		//catch code
+		App->physics->CreateCircle(230, 550, 40, b2BodyType::b2_staticBody);
+		catch_circle = App->physics->CreateCircleSensor(246, 265, 12);
 	}
 
 	// Draw ----------
@@ -172,9 +185,11 @@ update_status ModuleSceneIntro::Update(){
 	int x, y;
 	App->input->GetMousePosition(x, y);
 	iPoint map_coordinates = { x - App->renderer->camera.x, y - App->renderer->camera.y };
-	p2SString title("Mouse: %d, x -- %d y", map_coordinates.x, map_coordinates.y);
-
-
+	
+		p2SString title("SCORE %d", score);
+	
+		if(win)
+		p2SString title("YOU WIN!!!  with that score: %d",score);
 
 	App->window->SetTitle(title.GetString());
 	return UPDATE_CONTINUE;
@@ -367,6 +382,22 @@ void ModuleSceneIntro::DrawChainsBoard()
 		61, 399,
 		90, 423
 	};
+	int right_ramp[8] = {
+		391, 756,
+		423, 736,
+		423, 745,
+		393, 764
+	};
+	PhysBody* rightramp = App->physics->CreateChain(0, 0, right_ramp, 8, b2BodyType::b2_staticBody);
+
+	// Pivot 0, 0
+	int left_ramp[8] = {
+		81, 753,
+		45, 738,
+		45, 747,
+		74, 759
+	};
+	PhysBody* leftramp = App->physics->CreateChain(0, 0, left_ramp, 8, b2BodyType::b2_staticBody);
 	TunelExterior = App->physics->CreateChain(0, 0, tunel_exterior, 118, b2BodyType::b2_staticBody);
 	TunelExterior->body->SetActive(false);
 	int board[176] = {
@@ -502,20 +533,17 @@ void ModuleSceneIntro::DrawChainsBoard()
 		136, 696
 	};
 	PhysBody* Triangleleft = App->physics->CreateChain(0, 0, triangle_left, 20, b2BodyType::b2_kinematicBody);
-	int L_left[20] = {
-		152, 773,
-		163, 752,
-		106, 717,
-		99, 710,
-		95, 701,
-		95, 662,
-		82, 662,
-		82, 724,
-		86, 730,
-		102, 741
+	int L_left[16] = {
+		157, 766,
+		85, 720,
+		83, 668,
+		88, 655,
+		94, 668,
+		96, 704,
+		102, 713,
+		168, 755
 	};
-	PhysBody* LLeft = App->physics->CreateChain(0, 0, L_left, 20, b2BodyType::b2_staticBody);
-
+	PhysBody* LLeft = App->physics->CreateChain(0, 0, L_left, 16, b2BodyType::b2_staticBody);
 	int SharkpedoWalls[68] = {
 		323, 189,
 		323, 227,
@@ -688,7 +716,7 @@ void ModuleSceneIntro::DrawChainsBoard()
 void ModuleSceneIntro::Draw()
 {
 	
-	ball.physbody->GetPosition(ball.position.x, ball.position.y);
+	
 
 	//ball.physbody->body->GetPosition(, ball.position.y);
 
@@ -712,6 +740,7 @@ void ModuleSceneIntro::Draw()
 	App->renderer->Blit(right_flipper.texture, 295, 744, &right_flipper.box, 50.0f, (r_flipper_joint->GetJointAngle()*RADTODEG) + 180, right_flipper.physbody->body->GetWorldCenter().x, right_flipper.physbody->body->GetWorldCenter().y);
 	App->renderer->Blit(map, 234, 379, &bumpers.GetCurrentFrame(), -0.1f);
 	App->renderer->Blit(map, 300, 486, &capture.GetCurrentFrame(), -0.1f);
+	ball.physbody->GetPosition(ball.position.x, ball.position.y);
 	if (catch_on)
 	{
 		if (ready <= 3)
@@ -726,11 +755,11 @@ void ModuleSceneIntro::Draw()
 		}
 		else
 		{
-			App->renderer->Blit(Squared_Pokemon, 210, 550, &voltorb.GetCurrentFrame(), -0.1f);
+			App->renderer->Blit(Squared_Pokemon, 230, 550, &voltorb.GetCurrentFrame(), -0.1f);
 		}
 	}
 
-	if (top) 
+	if (!top) 
 	{
 		App->renderer->Blit(ball.texture, ball.position.x, ball.position.y, &ball.box, 50.0f, ball.physbody->GetRotation(), ball.physbody->body->GetLocalCenter().x + 11, ball.physbody->body->GetLocalCenter().y + 11);
 		App->renderer->Blit(overlay2->texture, overlay2->position.x, overlay2->position.y, &overlay2->box);
@@ -786,8 +815,14 @@ void ModuleSceneIntro::OnCollision(PhysBody* bodyA, PhysBody* bodyB) {
 	{
 		Close_begining->body->SetActive(true);
 	}
+	if (bodyB == catch_circle)
+	{
+		win = true;
+	}
 	if ((bodyB == chinchsensor1 || bodyB == chinchsensor2 || bodyB == chinchsensor3)) {
 		App->audio->PlayFx(1, 0);
+		score += 3000;
+		ready += 1;
 		bodyA->body->SetLinearVelocity(b2Vec2(4, -2));
 	}
 }
